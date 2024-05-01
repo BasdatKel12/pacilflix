@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tayangan</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pencarian Tayangan</h1>
+        <form>
+            <div class="form-group">
+                <label for="searchInput">Cari berdasarkan judul:</label>
+                <input type="text" class="form-control" id="searchInput" placeholder="Masukkan judul tayangan">
+            </div>
+            <button type="submit" class="btn btn-primary">Cari</button>
+        </form>
+
+        <h2>10 Tayangan Terbaik Minggu Ini</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pilih Opsi
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Global</a>
+                <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
+            </div>
+        </div>
+        <ul class="list-group mt-3">
+            <!-- Isi daftar tayangan terbaik -->
+            <li class="list-group-item">Tayangan 1</li>
+            <li class="list-group-item">Tayangan 2</li>
+            <li class="list-group-item">Tayangan 3</li>
+            <!-- dan seterusnya -->
+        </ul>
+
+        <h2>Daftar Film</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pilih Opsi
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Global</a>
+                <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
+            </div>
+        </div>
+        <ul class="list-group mt-3">
+            <!-- Isi daftar tayangan terbaik -->
+            <li class="list-group-item">Tayangan 1</li>
+            <li class="list-group-item">Tayangan 2</li>
+            <li class="list-group-item">Tayangan 3</li>
+            <!-- dan seterusnya -->
+        </ul>
+
+        <h2>Daftar Series</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pilih Opsi
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Global</a>
+                <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
+            </div>
+        </div>
+        <ul class="list-group mt-3">
+            <!-- Isi daftar tayangan terbaik -->
+            <li class="list-group-item">Tayangan 1</li>
+            <li class="list-group-item">Tayangan 2</li>
+            <li class="list-group-item">Tayangan 3</li>
+            <!-- dan seterusnya -->
+        </ul>
+
+        <!-- Tombol Halaman Tayangan -->
+        <div class="mt-3">
+            <button type="button" class="btn btn-primary" id="tayanganButton" style="display: none;">Tombol Halaman
+                Tayangan</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Script untuk menampilkan/menyembunyikan tombol Halaman Tayangan
+        $(document).ready(function () {
+            var paketAktif = true; // Ganti dengan logika pengecekan paket aktif
+
+            if (paketAktif) {
+                $('#tayanganButton').show();
+            } else {
+                $('#tayanganButton').hide();
+            }
+        });
+    </script>
+</body>
+
+</html>
