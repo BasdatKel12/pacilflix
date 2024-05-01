@@ -1,9 +1,10 @@
 from django.urls import path, include
-from main.views import show_main
+from main.views import landing_page, homepage
 
 
 app_name = 'main'
 
 urlpatterns = [
-    path('', show_main, name = 'show_main'),
+    path('', homepage, name = 'homepage'),
+    path('landing-page/', landing_page, name = "landing-page")
 ]

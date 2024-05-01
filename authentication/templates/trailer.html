@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Trailer</title>
+    <style>
+    
+    
+    </style>
+{% endblock meta %}
+
+{% block auth_navbar %}
+    {% if status == False %}
+        <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'authentication:login' %}">Login</a>
+            </li>
+            <span class="navbar-toggler-icon"></span>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'authentication:register' %}">Register</a>
+            </li>
+        </ul>
+        </div>
+    {% else %}
+        <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Homepage</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/authentication/trailer/">Trailer</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/">Tayangan</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/">Kontributor</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/">Favorit</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/">Unduhan</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/">Langganan</a>
+              </li>
+              <span class="navbar-toggler-icon"></span>
+
+              <li class="nav-item">
+                <a class="nav-link" style="background-color:red; border-radius: 20px;"  href="/authentication/logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+    {% endif %}
+{% endblock auth_navbar %}
+
+{% block content %}
+    <div class="container py-4" style="margin-top: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); background-color: #fff;">
+        <h1 style="text-align: center;">Daftar Tayangan</h1>
+        <form>
+            <div class="form-group">
+                <label for="searchInput">Cari berdasarkan judul:</label>
+                <input type="text" class="form-control" id="searchInput" placeholder="Masukkan judul tayangan">
+            </div>
+            <button type="submit" class="btn btn-primary">Cari</button>
+        </form>
+
+        <h2>10 Tayangan Terbaik Minggu Ini</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pilih Opsi
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Global</a>
+                <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
+            </div>
+        </div>
+        <ul class="list-group mt-3">
+            <!-- Isi daftar tayangan terbaik -->
+            <li class="list-group-item">Tayangan 1</li>
+            <li class="list-group-item">Tayangan 2</li>
+            <li class="list-group-item">Tayangan 3</li>
+            <!-- dan seterusnya -->
+        </ul>
+
+        <h2>Daftar Film</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pilih Opsi
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Global</a>
+                <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
+            </div>
+        </div>
+        <ul class="list-group mt-3">
+            <!-- Isi daftar tayangan terbaik -->
+            <li class="list-group-item">Tayangan 1</li>
+            <li class="list-group-item">Tayangan 2</li>
+            <li class="list-group-item">Tayangan 3</li>
+            <!-- dan seterusnya -->
+        </ul>
+
+        <h2>Daftar Series</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pilih Opsi
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Global</a>
+                <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
+            </div>
+        </div>
+        <ul class="list-group mt-3">
+            <!-- Isi daftar tayangan terbaik -->
+            <li class="list-group-item">Tayangan 1</li>
+            <li class="list-group-item">Tayangan 2</li>
+            <li class="list-group-item">Tayangan 3</li>
+            <!-- dan seterusnya -->
+        </ul>
+    </div>
+{% endblock content %}
