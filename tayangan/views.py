@@ -6,3 +6,12 @@ def list(request):
 
 def search(request):
     return render(request, 'search.html')
+
+def film(request):
+    return render(request, 'view_film.html')
+
+def series(request):
+    return render(request, 'view_series.html')
+
+def episode(request):
+    return render(request, 'view_episode.html')

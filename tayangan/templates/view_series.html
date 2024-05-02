@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Search</title>
+<title>Series</title>
 {% endblock meta %}
 
 {% block auth_navbar %}
@@ -78,36 +78,94 @@
 
 {% block content %}
 <div class="container py-4" style="margin-top: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); background-color: #fff;">
-    <h1>Pencarian Tayangan</h1>
-    <form>
-        <div class="form-group">
-            <input type="text" class="form-control" id="searchInput" placeholder="Masukkan judul tayangan">
+    <h1 class="row justify-content-center">
+        Series
+    </h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Information</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Judul</td>
+                        <td>[DATA]</td>
+                    </tr>
+                    <tr>
+                        <td>Episode</td>
+                        <td>
+                            <ul>
+                                <li><a href="#">[DATA]</a></li>
+                                <li><a href="#">[DATA]</a></li>
+                                <li><a href="#">[DATA]</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total View</td>
+                        <td>[DATA]</td>
+                    </tr>
+                    <tr>
+                        <td>Rating Rata-rata</td>
+                        <td>[DATA]</td>
+                    </tr>
+                    <tr>
+                        <td>Sinopsis</td>
+                        <td>[DATA]</td>
+                    </tr>
+                    <tr>
+                        <td>Genre</td>
+                        <td>
+                            <ul>
+                                <li>[DATA]</li>
+                                <li>[DATA]</li>
+                                <li>[DATA]</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Asal Negara</td>
+                        <td>[DATA]</td>
+                    </tr>
+                    <tr>
+                        <td>Pemain</td>
+                        <td>
+                            <ul>
+                                <li>[DATA]</li>
+                                <li>[DATA]</li>
+                                <li>[DATA]</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Penulis Skenario</td>
+                        <td>
+                            <ul>
+                                <li>[DATA]</li>
+                                <li>[DATA]</li>
+                                <li>[DATA]</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sutradara</td>
+                        <td>[DATA]</td>
+                    </tr>
+                    <tr>
+                        <td>ULASAN</td>
+                        <td>[DATA]</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary mt-3" id="downloadButton">Download</button>
+            <button type="button" class="btn btn-success mt-3" id="favoriteButton">Favorite</button>
         </div>
-        <button type="submit" class="btn btn-primary">Cari</button>
-    </form>
-
-    <hr>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Judul</th>
-                <th>Sinopsis</th>
-                <th>URL Trailer</th>
-                <th>Tanggal Rilis Trailer</th>
-                <th>Trailer</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>[DATA]</td>
-                <td>[DATA]</td>
-                <td>[DATA]</td>
-                <td>[DATA]</td>
-                <td><button type="button" class="btn btn-primary">Halaman Tayangan</button></td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
+    <hr class="my-4">
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
