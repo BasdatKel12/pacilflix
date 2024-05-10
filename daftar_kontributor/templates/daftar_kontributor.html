@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Daftar Kontributor</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <div class="mb-5">
+      <h2>Daftar Kontributor</h2>
+  </div>
+  <div class="mb-4">
+      <label for="exampleFormControlTextarea1" class="form-label fs-5 fw-medium">Filter</label>
+      <select class="form-select" aria-label="Default select example">
+          <option selected>Filter user</option>
+          <option value="1">Sutradara</option>
+          <option value="2">Pemain</option>
+          <option value="3">Penulis skenario</option>
+        </select>
+  </div>
+  <table class="table table-responsive table-striped table-hover rounded">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Nama</th>
+          <th scope="col">Tipe</th>
+          <th scope="col">Jenis Kelamin</th>
+          <th scope="col">Kewarganegaraan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Faza</td>
+          <td>Pemain</td>
+          <td>Lelaki</td>
+          <td>Belanda</td>
+        </tr>
+        <tr>
+          <td>Budiono siregar</td>
+          <td>Sutradara</td>
+          <td>Kapal laut</td>
+          <td>Medan</td>
+        </tr>
+        <tr>
+          <td>Struick</td>
+          <td>Pemain</td>
+          <td>Lelaki</td>
+          <td>Belanda</td>
+        </tr>
+        <tr>
+          <td>Budiono</td>
+          <td>Pemain</td>
+          <td>Lelaki</td>
+          <td>Belanda</td>
+        </tr>
+        <tr>
+          <td>Siregar</td>
+          <td>Penulis skenario</td>
+          <td>Binary</td>
+          <td>Belanda</td>
+        </tr>
+        <tr>
+          <td>Witan</td>
+          <td>Penulis skenario</td>
+          <td>Lelaki</td>
+          <td>Belanda</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+{% endblock content %}
