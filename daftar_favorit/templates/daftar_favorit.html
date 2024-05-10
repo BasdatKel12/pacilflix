@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Daftar Unduhan</title>
+{% endblock meta %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <div class="mb-5">
+        <h2>Daftar Favorit</h2>
+    </div>
+    <table class="table table-responsive table-striped table-hover rounded">
+        <thead class="table-light">
+        <tr>
+            <th scope="col" colspan=3 class="text-center">Daftar Favorit</th>
+        </tr>
+        <tr class="text-center">
+            <th scope="col">Judul</th>
+            <th scope="col">Waktu Ditambahkan</th>
+            <th scope="col">Aksi</th>
+        </tr>
+        </thead>
+        <tbody class="text-center">
+          <tr>
+            <td>Perkenalkan Nama Saya Budiono Siregar</td>
+            <td>2/04/2020</td>
+            <td>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    Hapus
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Judul</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah anda yakin ingin menghapus judul ini dari daftar favorit?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah ke Daftar Favorit</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Judul daftar favorit</p>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Pilih daftar favoritmu!</option>
+                    <option value="1">Galau</option>
+                    <option value="2">Happy</option>
+                    <option value="3">Badmood</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary">Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
