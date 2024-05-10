@@ -1,0 +1,83 @@
+
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Ulasan</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="mb-5">
+        <h2>Daftar Unduhan</h2>
+    </div>
+    <table class="table table-responsive table-striped table-hover rounded">
+        <thead class="table-light">
+        <tr>
+            <th scope="col" colspan=3 class="text-center">Daftar Unduhan</th>
+        </tr>
+        <tr class="text-center">
+            <th scope="col">Judul</th>
+            <th scope="col">Waktu Ditambahkan</th>
+            <th scope="col">Aksi</th>
+        </tr>
+        </thead>
+        <tbody class="text-center">
+          <tr>
+            <td>Perkenalkan Nama Saya Budiono Siregar</td>
+            <td>2/04/2020</td>
+            <td>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    Hapus
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Judul</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah anda yakin ingin menghapus judul ini dari daftar unduhan?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah ke Daftar Favorit</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div style="text-align: justify;" class="modal-body">
+                <p>Selamat! Anda telah berhasil mengunduh 
+                    <span class="fw-semibold">
+                        Perkenalkan Nama Saya Budiono Siregar
+                    </span> 
+                    dan akan
+                    berlaku hingga 
+                    <span class="fw-semibold">
+                        09/04/2020
+                    </span>
+                    . Cek informasi selengkapnya
+                    pada halaman daftar unduhan.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary">Ke Daftar Unduhan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
