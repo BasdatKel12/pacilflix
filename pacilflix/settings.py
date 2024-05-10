@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'tayangan',
-    'authentication'
+    'authentication',
+    'ulasan'
 ]
 
 MIDDLEWARE = [

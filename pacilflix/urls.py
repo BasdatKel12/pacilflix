@@ -22,4 +22,5 @@ urlpatterns = [
     path("tayangan/", include("tayangan.urls")),
     path('', include('main.urls')),
     path('authentication/', include('authentication.urls')),
+    path('ulasan/', include('ulasan.urls')),
 ]
