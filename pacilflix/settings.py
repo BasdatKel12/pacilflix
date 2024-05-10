@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'main',
     'tayangan',
     'authentication',
-    'ulasan'
+    'ulasan',
+    'daftar_unduhan'
 ]
 
 MIDDLEWARE = [
