@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Welcome Sir!</title>
+    <style>
+        .container-center  {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90%;
+        }
+        .landing {
+            background-color: #ffffff;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            height: auto;
+        }
+        .landing h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black; /* Warna teks kuning */
+        }
+        .nav-link {
+            color: white;
+        }
+        
+        @media only screen and (max-width: 768px) {
+        .container-center {
+            margin-right: 0;
+            justify-content: center;
+        }
+        .landing {
+            width: 50%;
+            height: auto;
+        }
+        }
+
+    </style>
+{% endblock meta %}
+
+{% block auth_navbar %}
+    <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'authentication:trailer' %}">Trailer</a>
+        </li>
+        <span class="navbar-toggler-icon"></span>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'authentication:login' %}">Login</a>
+        </li>
+        <span class="navbar-toggler-icon"></span>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'authentication:register' %}">Register</a>
+        </li>
+        <span class="navbar-toggler-icon"></span>
+    </ul>
+    </div>
+{% endblock auth_navbar %}
+
+{% block  content%}
+<div class="container-center">
+    <div class="landing">
+        <h1>Welcome To PacilFlix D-12</h1>
+    </div>
+</div>
+{% endblock content %}

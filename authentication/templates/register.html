@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Register</title>
+    <style>
+         body, html {
+            background-size: cover; 
+            height: 100%;
+        }
+        .container-center {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 15%;
+            align-items: center;
+            height: 80vh; /* Set tinggi ke tinggi viewport */
+        }
+        .register {
+            background-color: #ffffff;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            height: auto;
+        }
+        .register h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .register_btn {
+            background-color : black;
+            color: white;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            margin: auto;
+        }
+        tr {
+            text-align: left;
+        }
+        td {
+            vertical-align: middle;
+        }
+        td.label {
+            margin: 50px;
+            padding: 50px;
+        }
+        input.form-control {
+            margin: 10px 0;
+        }
+    </style>
+{% endblock meta %}
+
+{% block auth_navbar %}
+    <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'authentication:login' %}">Login</a>
+            </li>
+        </ul>
+    </div>
+{% endblock auth_navbar %}
+
+{% block content %}
+<div class="container-center">
+    <div class="register">
+        <h1>Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password1" placeholder="Password" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td>Validate Password: </td>
+                    <td><input type="password" name="password2" placeholder="Validate Password" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td>Negara Asal: </td>
+                    <td><input type="text" name="negara" placeholder="Darimana Asal Mu" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input class="btn register_btn" type="submit" value="Daftar"></td>
+                </tr>
+            </table>
+        </form>
+
+        {% if messages %}
+            <ul style="margin-top: 10px;">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

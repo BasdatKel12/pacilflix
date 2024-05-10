@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+    <style>
+        body, html {
+            background-size: cover; 
+            height: 100%;
+        }
+        .container-center {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 15%;
+            align-items: center;
+            height: 90%;
+        }
+        .login {
+            background-color: #ffffff;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            height: auto;
+        }
+        .login h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black; /* Warna teks kuning */
+        }
+        .login_btn {
+            background-color: black; /* Warna tombol kuning */
+            color: white; /* Warna teks hitam */
+            margin-top: 10%;
+        }
+        .nav-link {
+            color: white;
+        }
+        table {
+            width: 90%;
+            margin: auto;
+        }
+        tr {
+            text-align: left;
+        }
+        td {
+            vertical-align: middle;
+        }
+
+        td.label {
+            margin: 20px;
+            padding: 20px;
+        }
+        input.form-control {
+            margin: 10px 0;
+        }
+        @media only screen and (max-width: 768px) {
+        .container-center {
+            margin-right: 0;
+            justify-content: center;
+        }
+        .login {
+            width: 50%;
+            height: auto;
+        }
+        }
+
+    </style>
+{% endblock meta %}
+
+{% block auth_navbar %}
+    <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'authentication:trailer' %}">Trailer</a>
+        </li>
+        <span class="navbar-toggler-icon"></span>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'authentication:register' %}">Register</a>
+        </li>
+    </ul>
+    </div>
+{% endblock auth_navbar %}
+
+{% block content %}
+<div class="container-center">
+    <div class="login">
+        <h1>Login</h1>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input class="btn login_btn" type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
+        {% if messages %}
+            <ul style="margin-top: 10px;">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+    </div>
+</div>
+{% endblock content %}
