@@ -1,15 +1,11 @@
 import datetime
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.shortcuts import redirect
-from django.contrib import messages  
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.shortcuts import redirect  
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from authentication.models import Profile
+from django.db import connection
+from django.db.utils import IntegrityError
 
 # Create your views here.
 
@@ -18,16 +14,40 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
+        messages = []
+
+        if not username or not password:
+            messages.append('Username and password are required.')
+        elif len(username) < 3 or len(password) < 6:
+            messages.append('Username must be at least 3 characters and password must be at least 6 characters.')
+        
+        if messages:
+            return render(request, 'login.html', {'messages': messages})
+            
+        
+        with connection.cursor() as cursor:
+            cursor.execute(rf"""
+            SET search_path to pacilflix; 
+            SELECT * FROM pengguna WHERE username = '{username}' AND password = '{password}'
+            """)
+            user = cursor.fetchone()
+
+        if user:
+            with connection.cursor() as cursor:
+                cursor.execute(rf"""
+                SET search_path to public; 
+                """)
+            request.session['username'] = username
             response = HttpResponseRedirect(reverse("main:homepage")) 
+            response.set_cookie('username', username)
+            response.set_cookie('negara_asal', user[2])
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
-            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
-    context = {}
-    return render(request, 'login.html', context)
+            messages.append('Sorry, incorrect username or password. Please try again.')
+            return render(request, 'login.html', {'messages': messages})
+
+    return render(request, 'login.html')
 
 @csrf_exempt
 def register (request):
@@ -36,39 +56,42 @@ def register (request):
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
         negara = request.POST.get("negara")
+        messages = []
+        # print(request.POST)
+        if not username or not password1 or not negara:
+            messages.append('All fields are required.')
+        elif len(username) < 3 or len(password1) < 6:
+            messages.append('Username must be at least 3 characters and password must be at least 6 characters.')
+        if len(negara) < 2:
+            messages.append('Country must be at least 2 characters long.')
+        if password1 != password2:
+            messages.append('Password one and two must be same')
 
-        if password1 == password2:
-            user = User.objects.filter(username=username)
-            if len(user) == 0:
-                user = User.objects.create_user(
-                    username=username, password=password1)
-                new_user = Profile(user = user, negara=negara)
-                new_user.save()
-                messages.success(request, 'Your account has been successfully created!')
-                return redirect('authentication:login')
-            else:
-                messages.info(
-                    request, 'Maaf, akun yang dibuat sudah pernah didaftarkan! Silahkan coba yang lain!')
-                return redirect('authentication:register')
-        else:
-            messages.info(
-                request, 'Sorry, incorrect username or password. Please try again.')
-            return redirect('authentication:register')
+        if messages:
+            return render(request, 'register.html', {'messages': messages})
+        
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(rf"""
+                SET search_path to pacilflix; 
+                INSERT INTO pengguna VALUES ('{username}', '{password1}', '{negara}')""")
+        except Exception as e:
+            # print("Gagal menyimpan data Customer:", e)
+            messages.append('Username sudah exist')
+            return render(request, 'register.html', {'messages': messages})
+        return HttpResponseRedirect(reverse('authentication:login'))
     
     return render(request, 'register.html')
 
+@csrf_exempt
 def logout_user(request):
-    logout(request)
+    with connection.cursor() as cursor:
+                cursor.execute(rf"""
+                SET search_path to public; 
+                """)
     response = HttpResponseRedirect(reverse('main:landing-page'))
+    request.session.flush()
     response.delete_cookie('last_login')
+    response.delete_cookie('username')
+    response.delete_cookie('negara_asal')
     return response
-
-def show_trailer(request):
-    status = False
-    if request.user.is_authenticated :
-        status = True
-
-    context = {
-        'status': status
-    }
-    return render (request,"trailer.html",context)

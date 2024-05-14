@@ -1,11 +1,15 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # Create your views here.
-@login_required(login_url='landing-page/')
 def homepage(request):
+    # print(request.COOKIES)
+    if 'username' not in request.COOKIES:
+        return HttpResponseRedirect(reverse("main:landing-page")) 
+    username = request.COOKIES.get("username")
     context = {
-
+        "nama" : username
     }
 
     return render(request, "homepage.html", context)

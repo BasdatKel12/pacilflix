@@ -75,7 +75,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'authentication:trailer' %}">Trailer</a>
+            <a class="nav-link" href="/tayangan/trailer">Trailer</a>
         </li>
         <span class="navbar-toggler-icon"></span>
         <li class="nav-item">
@@ -110,8 +110,8 @@
         </form>
         {% if messages %}
             <ul style="margin-top: 10px;">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
+                {% for message in messages  %}
+                    <li>{{ message }}</li>    
                 {% endfor %}
             </ul>
         {% endif %}     

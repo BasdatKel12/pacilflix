@@ -66,6 +66,9 @@
         <a class="navbar-brand" href="/">PacilFlix</a>
         
         {% block auth_navbar %}
+          <span class="navbar-text" style="margin-left: 85px;">
+              {{ nama }}
+          </span>
           <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -78,7 +81,7 @@
               <span class="navbar-toggler-icon"></span>
 
               <li class="nav-item">
-                <a class="nav-link" href="/authentication/trailer/">Trailer</a>
+                <a class="nav-link" href="/tayangan/trailer">Trailer</a>
               </li>
               <span class="navbar-toggler-icon"></span>
 
