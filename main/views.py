@@ -7,9 +7,9 @@ def homepage(request):
     # print(request.COOKIES)
     if 'username' not in request.COOKIES:
         return HttpResponseRedirect(reverse("main:landing-page")) 
-    username = request.COOKIES.get("username")
+    
     context = {
-        "nama" : username
+        
     }
 
     return render(request, "homepage.html", context)

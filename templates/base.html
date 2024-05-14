@@ -67,7 +67,7 @@
         
         {% block auth_navbar %}
           <span class="navbar-text" style="margin-left: 85px;">
-              {{ nama }}
+              {{ request.COOKIES.username }}
           </span>
           <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -77,7 +77,7 @@ def register (request):
                 INSERT INTO pengguna VALUES ('{username}', '{password1}', '{negara}')""")
         except Exception as e:
             # print("Gagal menyimpan data Customer:", e)
-            messages.append('Username sudah exist')
+            messages.append('Username dengan nama tersebut sudah ada, silahkan coba yang lain!')
             return render(request, 'register.html', {'messages': messages})
         return HttpResponseRedirect(reverse('authentication:login'))
     
