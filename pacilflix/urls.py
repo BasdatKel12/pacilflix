@@ -24,4 +24,5 @@ urlpatterns = [
     path('authentication/', include('authentication.urls')),
     path('ulasan/', include('ulasan.urls')),
     path('daftar_unduhan/', include('daftar_unduhan.urls')),
+    path('daftar-kontributor/', include('daftar_kontributor.urls')),
 ]
