@@ -25,4 +25,5 @@ urlpatterns = [
     path('ulasan/', include('ulasan.urls')),
     path('daftar_unduhan/', include('daftar_unduhan.urls')),
     path('daftar-kontributor/', include('daftar_kontributor.urls')),
+    path('langganan/', include('langganan.urls')),
 ]
