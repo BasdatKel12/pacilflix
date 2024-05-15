@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def show_langganan_page(request):
+    return render(request, "kelola_langganan.html")
