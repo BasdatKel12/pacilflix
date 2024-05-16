@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Trailer</title>
+<title>Tayangan</title>
 {% endblock meta %}
 
 {% block auth_navbar %}
@@ -38,7 +38,7 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/tayangan/trailer/">Trailer</a>
+            <a class="nav-link" href="/authentication/trailer/">Trailer</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -84,7 +84,7 @@
             <label for="searchInput">Cari berdasarkan judul:</label>
             <input type="text" class="form-control" id="searchInput" placeholder="Masukkan judul tayangan">
         </div>
-        <button type="submit" class="btn btn-primary">Cari</button>
+        <button type="submit" class="btn btn-primary" onclick="redirectToFilm()">Cari</button>
     </form>
 
     <h2>10 Tayangan Terbaik Minggu Ini</h2>
@@ -108,7 +108,6 @@
                 <th>URL</th>
                 <th>Tanggal Rilis</th>
                 <th>Total View 7 Hari Terakhir</th>
-                <th>Tayangan</th>
             </tr>
         </thead>
         <tbody id="top10-list">
@@ -143,7 +142,7 @@
     </table>
 
     <h2>Daftar Film</h2>
-    <div class="dropdown">
+    {% comment %} <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             Pilih Opsi
@@ -153,7 +152,7 @@
             <a class="dropdown-item" href="#">Global</a>
             <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
         </div>
-    </div>
+    </div> {% endcomment %}
     <table class="table table-striped">
         <thead>
             <tr>
@@ -165,32 +164,28 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>A</th>
-                <th>B</th>
-                <th>C</th>
-                <th>D</th>
-                <th>E</th>
-            </tr>
-            <tr>
-                <th>I</th>
-                <th>J</th>
-                <th>K</th>
-                <th>L</th>
-                <th>M</th>
-            </tr>
-            <tr>
-                <th>Q</th>
-                <th>R</th>
-                <th>S</th>
-                <th>T</th>
-                <th>U</th>
-            </tr>
+            {% for film in list_film %}
+                <tr>
+                    <th>{{film.judul}}</th>
+                    <th>{{film.sinopsis_trailer}}</th>
+                    <th><a href={{film.url_video_trailer}}><button class="btn btn-secondary">Trailer</button></a></th>
+                    {% comment %} <th><a href={{film.url_video_trailer}}>URL</a></th> {% endcomment %}
+                    <th>{{film.release_date_trailer}}</th>
+                    <th>
+                        {% if active_paket %}
+                        <a href={{film.url_video_trailer}}><button class="btn btn-primary">Halaman</button></a>
+                        {% comment %} <a href='../film/{{film.id}}'>LINK KE PAGE</a> {% endcomment %}
+                        {% else %}
+                        <a href='#'><button class="btn btn-danger">Belum Berlangganan</button></a>
+                        {% endif %}
+                    </th>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
     <h2>Daftar Series</h2>
-    <div class="dropdown">
+    {% comment %} <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             Pilih Opsi
@@ -200,7 +195,7 @@
             <a class="dropdown-item" href="#">Global</a>
             <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
         </div>
-    </div>
+    </div> {% endcomment %}
     <table class="table table-striped">
         <thead>
             <tr>
@@ -212,28 +207,32 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>A</th>
-                <th>B</th>
-                <th>C</th>
-                <th>D</th>
-                <th>E</th>
-            </tr>
-            <tr>
-                <th>I</th>
-                <th>J</th>
-                <th>K</th>
-                <th>L</th>
-                <th>M</th>
-            </tr>
-            <tr>
-                <th>Q</th>
-                <th>R</th>
-                <th>S</th>
-                <th>T</th>
-                <th>U</th>
-            </tr>
+            {% for serie in list_series %}
+                <tr>
+                    <th>{{serie.judul}}</th>
+                    <th>{{serie.sinopsis_trailer}}</th>
+                    <th><a href={{serie.url_video_trailer}}>URL</a></th>
+                    <th>{{serie.release_date_trailer}}</th>
+                    <th>
+                        {% comment %} TODO {% endcomment %}
+                        {% if active_paket %}
+                        <a href='../series/{{serie.id}}'>LINK KE PAGE</a>
+                        {% else %}
+                        Belum Berlangganan
+                        {% endif %}
+                    </th>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script>
+    function redirectToFilm() {
+        event.preventDefault();
+        var searchInput = document.getElementById('searchInput').value;
+        window.location.href = '../search/' + encodeURIComponent(searchInput);
+    }
+</script>
+
 {% endblock content %}

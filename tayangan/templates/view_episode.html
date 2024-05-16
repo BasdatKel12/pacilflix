@@ -93,37 +93,39 @@
                 <tbody>
                     <tr>
                         <td>Judul</td>
-                        <td>[DATA]</td>
+                        <td>{{serie.judul}}</td>
                     </tr>
                     <tr>
                         <td>Sub Judul</td>
-                        <td>[DATA]</td>
+                        <td>{{episode.sub_judul}}</td>
                     </tr>
                     <tr>
                         <td>Episode Lainya</td>
                         <td>
                             <ul>
-                                <li><a href="#">[DATA]</a></li>
-                                <li><a href="#">[DATA]</a></li>
-                                <li><a href="#">[DATA]</a></li>
+                                <ul>
+                                    {% for episode in list_episode %}
+                                    <li><a href="../episode/{{episode.id_series}}-{{forloop.counter}}">{{episode.sub_judul}}</a></li>
+                                    {% endfor %}
+                                </ul>
                             </ul>
                         </td>
                     </tr>
                     <tr>
                         <td>Sinopsis Episode</td>
-                        <td>[DATA]</td>
+                        <td>{{episode.sinopsis}}</td>
                     </tr>
                     <tr>
                         <td>Durasi Episode</td>
-                        <td>[DATA]</td>
+                        <td>{{episode.durasi}}</td>
                     </tr>
                     <tr>
                         <td>URL Episode</td>
-                        <td>[DATA]</td>
+                        <td><a href={{episode.url_video}}>{{episode.url_video}}</a></td>
                     </tr>
                     <tr>
                         <td>Tanggal Rilis Episode</td>
-                        <td>[DATA]</td>
+                        <td>{{episode.release_date}}</td>
                     </tr>
 
                 </tbody>

@@ -83,7 +83,7 @@
         <div class="form-group">
             <input type="text" class="form-control" id="searchInput" placeholder="Masukkan judul tayangan">
         </div>
-        <button type="submit" class="btn btn-primary">Cari</button>
+        <button type="submit" class="btn btn-primary" onclick="redirectToFilm()">Cari</button>
     </form>
 
     <hr>
@@ -95,20 +95,34 @@
                 <th>Sinopsis</th>
                 <th>URL Trailer</th>
                 <th>Tanggal Rilis Trailer</th>
-                <th>Trailer</th>
+                <th>Tayangan</th>
             </tr>
         </thead>
         <tbody>
+            {% for result in results %}
             <tr>
-                <td>[DATA]</td>
-                <td>[DATA]</td>
-                <td>[DATA]</td>
-                <td>[DATA]</td>
-                <td><button type="button" class="btn btn-primary">Halaman Tayangan</button></td>
+                <td>{{result.judul}}</td>
+                <td>{{result.sinopsis}}</td>
+                <td><a href="{{result.url_video_trailer}}">{{result.url_video_trailer}}</a></td>
+                <td>{{result.release_date_trailer}}</td>
+                {% if result.is_film %}
+                    <td><a href="../film/{{result.id}}"><button type="button" class="btn btn-primary">Halaman</button></a></td>
+                {% else %}
+                    <td><a href="../series/{{result.id}}"><button type="button" class="btn btn-primary">Halaman</button></a></td>
+                {% endif %}
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script>
+    function redirectToFilm() {
+        event.preventDefault();
+        var searchInput = document.getElementById('searchInput').value;
+        window.location.href = './' + encodeURIComponent(searchInput);
+    }
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

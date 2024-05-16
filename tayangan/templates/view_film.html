@@ -93,39 +93,39 @@
                 <tbody>
                     <tr>
                         <td>Judul</td>
-                        <td>[DATA]</td>
+                        <td>{{film.judul}}</td>
                     </tr>
                     <tr>
                         <td>Total View</td>
-                        <td>[DATA]</td>
+                        <td>{{total_views}}</td>
                     </tr>
                     <tr>
                         <td>Rating Rata-rata</td>
-                        <td>[DATA]</td>
+                        <td>{{rating_avg}}</td>
                     </tr>
                     <tr>
                         <td>Sinopsis</td>
-                        <td>[DATA]</td>
+                        <td>{{film.sinopsis}}</td>
                     </tr>
                     <tr>
                         <td>Durasi Film</td>
-                        <td>[DATA]</td>
+                        <td>{{film.durasi_film}}</td>
                     </tr>
                     <tr>
                         <td>Tanggal Rilis Film</td>
-                        <td>[DATA]</td>
+                        <td>{{film.release_date_film}}</td>
                     </tr>
                     <tr>
                         <td>URL Film</td>
-                        <td>[DATA]</td>
+                        <td><a href="{{film.url_video_film}}">{{film.url_video_film}}</a></td>
                     </tr>
                     <tr>
                         <td>Genre</td>
                         <td>
                             <ul>
-                                <li>[DATA]</li>
-                                <li>[DATA]</li>
-                                <li>[DATA]</li>
+                                {% for genre in list_genre %}
+                                    <li>{{genre.genre}}</li>
+                                {% endfor %}
                             </ul>
                         </td>
                     </tr>
@@ -133,9 +133,9 @@
                         <td>Pemain</td>
                         <td>
                             <ul>
-                                <li>[DATA]</li>
-                                <li>[DATA]</li>
-                                <li>[DATA]</li>
+                                {% for pemain in list_pemain %}
+                                    <li>{{pemain.nama}}</li>
+                                {% endfor %}
                             </ul>
                         </td>
                     </tr>
@@ -143,15 +143,15 @@
                         <td>Penulis Skenario</td>
                         <td>
                             <ul>
-                                <li>[DATA]</li>
-                                <li>[DATA]</li>
-                                <li>[DATA]</li>
+                                {% for skenario in list_skenario %}
+                                    <li>{{skenario.nama}}</li>
+                                {% endfor %}
                             </ul>
                         </td>
                     </tr>
                     <tr>
                         <td>Sutradara</td>
-                        <td>[DATA]</td>
+                        <td>{{sutradara.nama}}</td>
                     </tr>
                     <tr>
                         <td>ULASAN</td>
