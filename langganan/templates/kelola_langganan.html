@@ -28,7 +28,7 @@
                 <tr>
                     <td>{{ langganan.nama }}</td>
                     <td>{{ langganan.harga }}</td>
-                    <td>{{ lengganan.resolusi_layar }}</td>
+                    <td>{{ langganan.resolusi_layar }}</td>
                     <td>{{ langganan.dukungan_perangkat }}</td>
                     <td>{{ langganan.start_date_time }}</td>
                     <td>{{ langganan.end_date_time }}</td>
@@ -61,9 +61,7 @@
                     <td>{{ paket.resolusi_layar }}</td>
                     <td>{{ paket.dukungan_perangkat }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            Beli
-                        </button>
+                        <a href="{% url 'langganan:show_beli_page' paket.nama paket.dukungan_perangkat %}" class="btn btn-primary">Beli</a>
                     </td>
                   </tr>
               {% endfor %}

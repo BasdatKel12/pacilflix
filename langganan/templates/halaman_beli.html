@@ -12,32 +12,35 @@
         <h2>Halaman Beli</h2>
     </div>
     <label for="exampleFormControlTextarea1" class="form-label fs-5 fw-medium mb-4">Informasi Paket yang Ingin Dibeli:</label>
-    <table class="table table-responsive table-striped table-hover rounded">
-        <thead class="table-light">
-        <tr class="text-center">
-            <th scope="col">Nama</th>
-            <th scope="col">Harga</th>
-            <th scope="col">Resolusi Layar</th>
-            <th scope="col">Dukungan Perangkat</th>
-        </tr>
-        </thead>
-        <tbody class="text-center">
-            <tr>
-            <td>Premium</td>
-            <td>Rp.10000</td>
-            <td>4K</td>
-            <td>Laptop, Handphone</td>
+    <form method="post" action="{% url 'langganan:bayar_paket' paket.nama paket.dukungan_perangkat %}">
+        {% csrf_token %}
+        <table class="table table-striped table-hover rounded bg-light">
+            <thead class="table-light">
+            <tr class="text-center">
+                <th scope="col">Nama</th>
+                <th scope="col">Harga</th>
+                <th scope="col">Resolusi Layar</th>
+                <th scope="col">Dukungan Perangkat</th>
             </tr>
-        </tbody>
-    </table>
-    <label for="exampleFormControlTextarea1" class="form-label fs-5 fw-medium mb-4">Pilih Metode Pembayaran:</label>
-    <select class="form-select my-4" aria-label="Default select example">
-        <option selected>Pilih Metode Pembayaran!</option>
-        <option value="1">Transfer Bank</option>
-        <option value="2">Kartu Kredit</option>
-        <option value="3">E-wallet</option>
-    </select>
-    <button class="btn btn-primary" type="button">Bayar</button>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td>{{ paket.nama }}</td>
+                    <td>{{ paket.harga }}</td>
+                    <td>{{ paket.resolusi_layar }}</td>
+                    <td>{{ paket.dukungan_perangkat }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <label for="metode_pembayaran" class="form-label fs-5 fw-medium mb-4">Pilih Metode Pembayaran:</label>
+        <select id="metode_pembayaran" name="metode_pembayaran" class="form-select my-4" aria-label="Default select example">
+            <option selected>Pilih Metode Pembayaran!</option>
+            <option value="Bank Transfer">Transfer Bank</option>
+            <option value="Credit Card">Kartu Kredit</option>
+            <option value="E-wallet">E-wallet</option>
+        </select>
+        <button class="btn btn-primary" type="submit">Bayar</button>
+    </form>
 </div>
 
 {% endblock content %}
