@@ -15,9 +15,19 @@ def show_langganan_page(request):
                                                      'daftar_langganan' : daftar_langganan_list,
                                                      'daftar_transaksi' : daftar_transaksi_list})
 
-def show_beli_page(request):
+def show_beli_page(request, nama_paket, dukungan_perangkat):
     try:
         username = request.COOKIES['username']
     except:
         return HttpResponseRedirect(reverse("authentication:login"))
-    return render(request, "halaman_beli.html")
+    paket = get_paket(nama_paket, dukungan_perangkat)[0]
+    return render(request, "halaman_beli.html", {'paket' : paket})
+
+def bayar_paket(request, nama_paket, dukungan_perangkat):
+    try:
+        username = request.COOKIES['username']
+    except:
+        return HttpResponseRedirect(reverse("authentication:login"))
+    metode = request.POST.get('metode_pembayaran')
+    bayar_paket_post(username, nama_paket, metode)
+    return HttpResponseRedirect(reverse("langganan:show_langganan_page"))
