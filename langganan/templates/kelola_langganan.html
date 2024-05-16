@@ -6,12 +6,12 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 pb-4">
     <div class="mb-5">
-        <h2>HALAMAN KELOLA LANGGANAN</h2>
+        <h2 class="bg-light">HALAMAN KELOLA LANGGANAN</h2>
     </div>
-    <label for="exampleFormControlTextarea1" class="form-label fs-5 fw-medium">Paket Langganan Aktif Anda:</label>
-    <table class="table table-responsive table-striped table-hover rounded">
+    <label for="exampleFormControlTextarea1" class="form-label bg-light fs-5 fw-medium">Paket Langganan Aktif Anda:</label>
+    <table class="table rounded bg-light table-striped table-hover">
         <thead class="table-light">
         <tr class="text-center">
             <th scope="col">Nama</th>
@@ -23,18 +23,26 @@
         </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td>Basic</td>
-                <td>Rp.2000</td>
-                <td>720p</td>
-                <td>Handphone</td>
-                <td>02/04/2020</td>
-                <td>02/05/2020</td>
-            </tr>
+            {% if daftar_langganan %}
+              {% for langganan in daftar_langganan %}
+                <tr>
+                    <td>{{ langganan.nama }}</td>
+                    <td>{{ langganan.harga }}</td>
+                    <td>{{ lengganan.resolusi_layar }}</td>
+                    <td>{{ langganan.dukungan_perangkat }}</td>
+                    <td>{{ langganan.start_date_time }}</td>
+                    <td>{{ langganan.end_date_time }}</td>
+                  </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="6">No paket found.</td>
+              </tr>
+            {% endif %}
         </tbody>
       </table>
-      <label for="exampleFormControlTextarea1" class="form-label fs-5 fw-medium">Pilih Paket Lain:</label>
-    <table class="table table-responsive table-striped table-hover rounded">
+      <label for="exampleFormControlTextarea1" class="form-label bg-light fs-5 fw-medium">Pilih Paket Lain:</label>
+    <table class="table bg-light table-striped table-hover rounded">
         <thead class="table-light">
         <tr class="text-center">
             <th scope="col">Nama</th>
@@ -45,43 +53,29 @@
         </tr>
         </thead>
         <tbody class="text-center">
-          <tr>
-            <td>Premium</td>
-            <td>Rp.10000</td>
-            <td>4K</td>
-            <td>Laptop, Handphone</td>
-            <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Beli
-                </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Standar</td>
-            <td>Rp.5000</td>
-            <td>2K</td>
-            <td>Laptop</td>
-            <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Beli
-                </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Basic</td>
-            <td>Rp.2000</td>
-            <td>720p</td>
-            <td>Handphone</td>
-            <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Beli
-                </button>
-            </td>
-          </tr>
+            {% if daftar_paket %}
+              {% for paket in daftar_paket %}
+                <tr>
+                    <td>{{ paket.nama }}</td>
+                    <td>{{ paket.harga }}</td>
+                    <td>{{ paket.resolusi_layar }}</td>
+                    <td>{{ paket.dukungan_perangkat }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            Beli
+                        </button>
+                    </td>
+                  </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="4">No paket found.</td>
+              </tr>
+            {% endif %}
         </tbody>
       </table>
-      <label for="exampleFormControlTextarea1" class="form-label fs-5 fw-medium">Riwayat Transaksi</label>
-    <table class="table table-responsive table-striped table-hover rounded">
+      <label for="exampleFormControlTextarea1" class="form-label bg-light fs-5 fw-medium">Riwayat Transaksi</label>
+    <table class="table bg-light table-striped table-hover rounded">
         <thead class="table-light">
         <tr class="text-center">
             <th scope="col">Nama Paket</th>
@@ -93,14 +87,22 @@
         </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td>Basic</td>
-                <td>02/04/2020</td>
-                <td>02/05/2020</td>
-                <td>transfer bank</td>
-                <td>02/04/2020</td>
-                <td>Rp.2000</td>
-            </tr>
+            {% if daftar_transaksi %}
+              {% for transaksi in daftar_transaksi %}
+                <tr>
+                    <td>{{ transaksi.nama_paket }}</td>
+                    <td>{{ transaksi.start_date_time }}</td>
+                    <td>{{ transaksi.end_date_time }}</td>
+                    <td>{{ transaksi.metode_pembayaran }}</td>
+                    <td>{{ transaksi.timestamp_pembayaran }}</td>
+                    <td>{{ transaksi.harga }}</td>
+                  </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="6">No Transaksi found.</td>
+              </tr>
+            {% endif %}
         </tbody>
       </table>
 </div>
