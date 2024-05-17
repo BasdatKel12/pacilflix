@@ -211,14 +211,14 @@
                 <tr>
                     <th>{{serie.judul}}</th>
                     <th>{{serie.sinopsis_trailer}}</th>
-                    <th><a href={{serie.url_video_trailer}}>URL</a></th>
+                    <th><a href={{serie.url_video_trailer}}><button class="btn btn-secondary">Trailer</button></a></th>
                     <th>{{serie.release_date_trailer}}</th>
                     <th>
-                        {% comment %} TODO {% endcomment %}
                         {% if active_paket %}
-                        <a href='../series/{{serie.id}}'>LINK KE PAGE</a>
+                        <a href='../series/{{serie.id}}'><button class="btn btn-primary">Halaman</button></a>
+                        {% comment %} <a href='../film/{{film.id}}'>LINK KE PAGE</a> {% endcomment %}
                         {% else %}
-                        Belum Berlangganan
+                        <a href='#'><button class="btn btn-danger">Belum Berlangganan</button></a>
                         {% endif %}
                     </th>
                 </tr>

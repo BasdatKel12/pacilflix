@@ -15,7 +15,7 @@ def add_ulasan(request):
     username = 'LilyDreamer87'
     if request.method == 'POST':
         data = json.loads(request.body)
-        timestamp = datetime.datetime.now()
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         id_tayangan = data['id_tayangan']
         rating = data['rating']
         deskripsi = data['deskripsi']
@@ -36,9 +36,9 @@ def add_ulasan(request):
             );
             """)
         
-        return HttpResponseRedirect('./')
+        return HttpResponse({'status': 'OK'})
 
-    return HttpResponse('INVALID METHOD')
+    return HttpResponse({'status': 'INVALID METHOD'})
 
 def list(request):
     # if 'username' not in request.COOKIES :
@@ -101,7 +101,6 @@ def search(request, judul: str):
         columns = ("id","judul","sinopsis","asal_negara","sinopsis_trailer","url_video_trailer","release_date_trailer","id_sutradara","is_film")
         results = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
-    print(results)
     context = {
         'results' : results
     }
@@ -200,6 +199,16 @@ def film(request, id: str):
         columns = ("nama",) 
         sutradara = parse_tuple_to_dict(cursor.fetchall(), cols=columns)[0]
 
+        # Get Ulasan
+        cursor.execute(rf"""
+        SET search_path to pacilflix;
+        SELECT * FROM ulasan
+        WHERE id_tayangan='{id}'
+        ORDER BY timestamp;
+        """)
+        columns = ("id_tayangan","username","timestamp","rating","deskripsi")
+        list_ulasan = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
+
     context = {
         'film' : film,
         'total_views' : total_views,
@@ -207,7 +216,8 @@ def film(request, id: str):
         'list_genre' : list_genre,
         'list_pemain' : list_pemain,
         'list_skenario' : list_skenario,
-        'sutradara' : sutradara
+        'sutradara' : sutradara,
+        'list_ulasan' : list_ulasan
     }    
     
     return render(request, 'view_film.html', context=context)
