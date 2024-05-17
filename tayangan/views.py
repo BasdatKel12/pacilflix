@@ -5,16 +5,37 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 import datetime
+import json
 
+@csrf_exempt
 def add_ulasan(request):
-    if request.method == 'POST' and 'username' in request.COOKIES:
-        username = request.COOKIES['username']
+    # TODO: Filter Login
+    
+    # username = request.COOKIE['username']
+    username = 'LilyDreamer87'
+    if request.method == 'POST':
+        data = json.loads(request.body)
         timestamp = datetime.datetime.now()
-        id_tayangan = request.POST['deskripsi']
-        rating = request.POST['rating']
-        deskripsi = request.POST['deskripsi']
+        id_tayangan = data['deskripsi']
+        rating = data['rating']
+        deskripsi = data['deskripsi']
 
-        # TODO: Continue inserting data
+        with connection.cursor() as cursor:
+            # Get User Paket
+            cursor.execute(rf"""
+            SET search_path to pacilflix;
+            INSERT INTO
+            ulasan (username, timestamp, id_tayangan, rating, deskripsi)
+            VALUES
+            (
+            '{username}',
+            '{timestamp}',
+            '{id_tayangan}',
+            {rating},
+            '{deskripsi}'
+            );
+            """)
+        
 
     return HttpResponse('INVALID METHOD')
 
@@ -23,7 +44,7 @@ def list(request):
         # return HttpResponseRedirect(reverse('authentication:login'))
     
     # username = request.POST.get("username")
-    username = 'SarahSunshine34'
+    username = 'SarahSunshine33'
     # TODO : FIX HARDCODING
     with connection.cursor() as cursor:
         # Get User Paket

@@ -9,5 +9,5 @@ urlpatterns = [
     path("series/<str:id>", views.series),
     path("episode/<str:id>", views.episode),
     path('trailer/', views.show_trailer, name = 'trailer'),
-    path("add_ulasan", views.add_ulasan),
+    path("add_ulasan/", views.add_ulasan),
 ]
