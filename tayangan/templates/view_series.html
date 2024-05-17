@@ -145,6 +145,54 @@
 </div>
 
 <script>
+    document.getElementById('downloadButton').addEventListener('click', function() {
+        const id_tayangan = 'example_id';  // Replace with actual id_tayangan
+
+        fetch('/add_unduhan/{{series.id_tayangan}}', {  // Adjust the endpoint URL if necessary
+            method: 'GET',
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 500) {
+                    alert('Error 500: Internal Server Error. Please try again later.');
+                    return Promise.reject('Internal Server Error');
+                } else {
+                    return response.json().then(errorData => {
+                        return Promise.reject(errorData.message || 'Unknown error');
+                    });
+                }
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            alert('Request successful');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (error !== 'Internal Server Error') {
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+<script>
     document.getElementById('ratingForm').addEventListener('submit', function(event) {
         event.preventDefault();
 

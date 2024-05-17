@@ -33,9 +33,9 @@
                                 <input type="range" class="form-control" id="rangeInput" name="rangeInput" min="0" max="100" step="1">
                             </div>
                             <button type="submit" class="btn btn-primary my-1 mx-2" id="watchButton">Tonton</button>
-                            <button type="button" class="btn btn-secondary my-1 mx-2" id="downloadButton">Download</button>
-                            <button type="button" class="btn btn-success my-1 mx-2" id="favoriteButton">Favorite</button>
                         </form>
+                        <button type="button" class="btn btn-secondary my-1 mx-2" id="downloadButton">Download</button>
+                        <button type="button" class="btn btn-success my-1 mx-2" id="favoriteButton">Favorite</button>
                     </tr>
                     <tr>
                         <td>Total View</td>
@@ -153,6 +153,54 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    document.getElementById('downloadButton').addEventListener('click', function() {
+        const id_tayangan = 'example_id';  // Replace with actual id_tayangan
+
+        fetch('/add_unduhan/{{film.id_tayangan}}', {  // Adjust the endpoint URL if necessary
+            method: 'GET',
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 500) {
+                    alert('Error 500: Internal Server Error. Please try again later.');
+                    return Promise.reject('Internal Server Error');
+                } else {
+                    return response.json().then(errorData => {
+                        return Promise.reject(errorData.message || 'Unknown error');
+                    });
+                }
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            alert('Request successful');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (error !== 'Internal Server Error') {
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 
 <script>
     document.getElementById('rangeForm').addEventListener('submit', function(event) {
