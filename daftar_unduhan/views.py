@@ -23,3 +23,16 @@ def delete_unduhan(request):
         """)
     
     return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
+
+def add_unduhan(request):
+    username = request.POST.get('username')
+    
+    id_tayangan = request.POST.get('id_tayangan')
+
+    with connection.cursor() as cursor:
+        cursor.execute(rf"""SET search_path TO pacilflix;
+        INSERT INTO tayangan_terunduh (timestamp, username, judul)
+        VALUES ('{id_tayangan}', '{username}', NOW() );
+        """)
+    
+    return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))

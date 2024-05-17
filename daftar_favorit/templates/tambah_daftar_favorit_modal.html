@@ -28,9 +28,29 @@
             </script>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Tambah</button>
+                <form action="{% url 'daftar_favorit:add_favorit' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="judul" id="judulToRefer">
+                    <input type="hidden" name="username" id="usernameToRefer">
+                    <input type="hidden" name="judul_list" id="selectedText">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary add-button">Tambah</button>
+                </form>
+                
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('.add-button').each(function () {
+        $(this).on('click', function () {
+            var username = $(this).data('username');
+            var id_tayangan = $(this).data('id_tayangan');
+            var judul_list = $(this).data('judul_list');
+            document.getElementById('usernameToRefer').value = username;
+            document.getElementById('id_tayanganToRefer').value = id_tayangan;
+            document.getElementById('selectedText').value = judul_list;
+        });
+});
+</script>
