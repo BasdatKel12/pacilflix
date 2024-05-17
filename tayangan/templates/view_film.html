@@ -205,14 +205,29 @@
                 deskripsi: deskripsi
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 500) {
+                    alert('Database Tertrigger, pengguna sudah memberikan komentar');
+                    return Promise.reject('Internal Server Error');
+                } else {
+                    return response.json().then(errorData => {
+                        return Promise.reject(errorData.message || 'Unknown error');
+                    });
+                }
+            }
+            return response.json();
         })
-        .catch((error) => {
+        .then(data => {
+            console.log(data);
+            location.reload();
+        })
+        .catch(error => {
             console.error('Error:', error);
+            if (error !== 'Internal Server Error') {
+                alert('Database Tertrigger, pengguna sudah memberikan komentar');
+            }
         });
-        location.reload()
     });
 </script>
 

@@ -1,5 +1,5 @@
 from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -52,24 +52,27 @@ def add_ulasan(request):
         deskripsi = data['deskripsi']
 
         with connection.cursor() as cursor:
-            # Get User Paket
-            cursor.execute(rf"""
-            SET search_path to pacilflix;
-            INSERT INTO
-            ulasan (username, timestamp, id_tayangan, rating, deskripsi)
-            VALUES
-            (
-            '{username}',
-            '{timestamp}',
-            '{id_tayangan}',
-            {rating},
-            '{deskripsi}'
-            );
-            """)
+            try: 
+                # Insert Ulasan
+                cursor.execute(rf"""
+                SET search_path to pacilflix;
+                INSERT INTO
+                ulasan (username, timestamp, id_tayangan, rating, deskripsi)
+                VALUES
+                (
+                '{username}',
+                '{timestamp}',
+                '{id_tayangan}',
+                {rating},
+                '{deskripsi}'
+                );
+                """)
+            except Exception as e:
+                return JsonResponse({}, status=500)
         
-        return HttpResponse({'status': 'OK'})
+        return JsonResponse({}, status=200)
 
-    return HttpResponse({'status': 'INVALID METHOD'})
+    return JsonResponse({}, status=400)
 
 def list(request):
     return HttpResponseRedirect('./1')

@@ -102,7 +102,12 @@
                 <option value="2">2</option>
                 <option value="3" selected>3</option>
                 <option value="4">4</option>
-                <option value="5">5</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
             </select>
         </div>
         <div class="form-group">
@@ -158,14 +163,29 @@
                 deskripsi: deskripsi
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 500) {
+                    alert('Database Tertrigger, pengguna sudah memberikan komentar');
+                    return Promise.reject('Internal Server Error');
+                } else {
+                    return response.json().then(errorData => {
+                        return Promise.reject(errorData.message || 'Unknown error');
+                    });
+                }
+            }
+            return response.json();
         })
-        .catch((error) => {
+        .then(data => {
+            console.log(data);
+            location.reload();
+        })
+        .catch(error => {
             console.error('Error:', error);
+            if (error !== 'Internal Server Error') {
+                alert('Database Tertrigger, pengguna sudah memberikan komentar');
+            }
         });
-        location.reload()
     });
 </script>
 
