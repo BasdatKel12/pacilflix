@@ -26,3 +26,19 @@ def delete_favorit(request):
         """)
     
     return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))   
+
+def add_favorit(request):
+    username = request.POST.get('username')
+    list_judul = request.POST.get('selectedText')
+    id_tayangan = request.POST.get('id_tayangan')
+
+    with connection.cursor() as cursor:
+        cursor.execute(rf"""SET search_path TO pacilflix;
+        INSERT INTO daftar_favorit (timestamp, username, judul)
+        VALUES (NOW(), '{username}', '{judul}' );
+
+        INSERT INTO tayangan_memiliki_daftar_favorit (id_tayangan, timestamp, username)
+        VALUES ('{id_tayangan}', NOW(), '{username}');
+        """)
+    
+    return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))

@@ -17,6 +17,16 @@
                     <option value="3">Badmood</option>
                 </select>
             </div>
+
+            <script>
+                document.getElementById('form-select').addEventListener('click', function() {
+                    var selectElement = document.getElementById('favoriteSelect');
+                    var selectedValue = selectElement.value;
+                    var selectedText = selectElement.options[selectElement.selectedIndex].text;
+                    alert('Selected Value: ' + selectedValue + '\nSelected Text: ' + selectedText);
+                });
+            </script>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <button type="button" class="btn btn-primary">Tambah</button>
