@@ -88,17 +88,8 @@
     </form>
 
     <h2>10 Tayangan Terbaik Minggu Ini</h2>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Pilih Opsi
-        </button>
-        <div class="my-2"></div>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Global</a>
-            <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
-        </div>
-    </div>
+    <th><a href='./1'><button class="my-2 btn btn-primary">Global</button></a></th>
+    <th><a href='./0'><button class="my-2 btn btn-secondary">Lokal</button></a></th>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -108,36 +99,32 @@
                 <th>URL</th>
                 <th>Tanggal Rilis</th>
                 <th>Total View 7 Hari Terakhir</th>
+                <th>Tayangan</th>
             </tr>
         </thead>
         <tbody id="top10-list">
+            {% for tayangan in list_top_tayangan %}
             <tr>
-                <th>A</th>
-                <th>B</th>
-                <th>C</th>
-                <th>D</th>
-                <th>E</th>
-                <th>F</th>
-                <th>G</th>
+                <th>{{forloop.counter}}</th>
+                <th>{{tayangan.judul}}</th>
+                <th>{{tayangan.sinopsis}}</th>
+                <th><a href={{tayangan.url_video_trailer}}><button class="btn btn-secondary">Trailer</button></a></th>
+                <th>{{tayangan.release_date_trailer}}</th>
+                <th>{{tayangan.count}}</th>
+                <th>
+                    {% if active_paket %}
+                        {% if tayangan.source == "film" %}
+                            <a href='../film/{{tayangan.id}}'><button class="btn btn-primary">Halaman</button></a>
+                            {% comment %} <a href='../film/{{film.id}}'>LINK KE PAGE</a> {% endcomment %}
+                        {% else %}
+                            <a href='../series/{{tayangan.id}}'><button class="btn btn-primary">Halaman</button></a>
+                        {% endif %}
+                    {% else %}
+                        <a href='#'><button class="btn btn-danger">Belum Berlangganan</button></a>
+                    {% endif %}
+                </th>
             </tr>
-            <tr>
-                <th>I</th>
-                <th>J</th>
-                <th>K</th>
-                <th>L</th>
-                <th>M</th>
-                <th>N</th>
-                <th>O</th>
-            </tr>
-            <tr>
-                <th>Q</th>
-                <th>R</th>
-                <th>S</th>
-                <th>T</th>
-                <th>U</th>
-                <th>V</th>
-                <th>W</th>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
