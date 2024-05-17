@@ -96,6 +96,20 @@
                         <td>{{film.judul}}</td>
                     </tr>
                     <tr>
+                        <form id="rangeForm">
+                            <input type="hidden" id="id_tayangan" value={{film.id_tayangan}} />
+                            <input type="hidden" id="tipe_tayangan" value="film" />
+                            <input type="hidden" id="durasi" value={{film.durasi_film}} />
+                            <div class="form-group">
+                                <label for="rangeInput">Progres Menonton</label>
+                                <input type="range" class="form-control" id="rangeInput" name="rangeInput" min="0" max="100" step="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary my-1 mx-2" id="watchButton">Tonton</button>
+                            <button type="button" class="btn btn-secondary my-1 mx-2" id="downloadButton">Download</button>
+                            <button type="button" class="btn btn-success my-1 mx-2" id="favoriteButton">Favorite</button>
+                        </form>
+                    </tr>
+                    <tr>
                         <td>Total View</td>
                         <td>{{total_views}}</td>
                     </tr>
@@ -155,10 +169,6 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-primary mt-3" id="watchButton" [Insert release date
-                here]>Tonton</button>
-            <button type="button" class="btn btn-secondary mt-3" id="downloadButton">Download</button>
-            <button type="button" class="btn btn-success mt-3" id="favoriteButton">Favorite</button>
         </div>
     </div>
     <hr class="my-4">
@@ -215,6 +225,38 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    document.getElementById('rangeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const rangeValue = document.getElementById('rangeInput').value;
+        const id_tayangan = document.getElementById('id_tayangan').value;
+        const tipe_tayangan = document.getElementById('tipe_tayangan').value;
+        const durasi = document.getElementById('durasi').value;
+
+        fetch('../update_riwayat_nonton/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rangeValue: rangeValue,
+                id_tayangan: id_tayangan,
+                tipe_tayangan: tipe_tayangan,
+                durasi : durasi
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        location.reload()
+    });
+</script>
 
 <script>
     document.getElementById('ratingForm').addEventListener('submit', function(event) {

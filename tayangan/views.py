@@ -8,6 +8,43 @@ import datetime
 import json
 
 @csrf_exempt
+def update_watchtime(request):
+    # TODO: Filter Login
+    
+    # username = request.COOKIE['username']
+    username = 'LilyDreamer87'
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        tipe_tayangan = data['tipe_tayangan']
+        now_datetime = datetime.datetime.now()
+        id_tayangan = data['id_tayangan']
+        durasi_percent = int(data['rangeValue'])/100
+        durasi = int(data['durasi'])
+
+        now_timestamp = now_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        time_delta = datetime.timedelta(minutes=durasi_percent*durasi)
+        end_timestamp = (now_datetime + time_delta).strftime('%Y-%m-%d %H:%M:%S')
+
+        with connection.cursor() as cursor:
+            # Insert Riwayat Nonton
+            cursor.execute(rf"""
+            SET search_path to pacilflix;
+
+            INSERT INTO riwayat_nonton (id_tayangan, username, start_date_time, end_date_time)
+            VALUES (
+            '{id_tayangan}',
+            '{username}',
+            '{now_timestamp}',
+            '{end_timestamp}'
+            )
+            """)
+        
+        return HttpResponse({'status': 'OK'})
+
+    return HttpResponse({'status': 'INVALID METHOD'})
+
+@csrf_exempt
 def add_ulasan(request):
     # TODO: Filter Login
     

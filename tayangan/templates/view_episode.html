@@ -96,6 +96,18 @@
                         <td>{{serie.judul}}</td>
                     </tr>
                     <tr>
+                        <form id="rangeForm">
+                            <input type="hidden" id="id_tayangan" value={{episode.id_series}} />
+                            <input type="hidden" id="tipe_tayangan" value="episode" />
+                            <input type="hidden" id="durasi" value={{episode.durasi}}
+                            <div class="form-group">
+                                <label for="rangeInput">Progres Menonton</label>
+                                <input type="range" class="form-control" id="rangeInput" name="rangeInput" min="0" max="100" step="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary my-1 mx-2" id="watchButton">Tonton</button>
+                        </form>
+                    </tr>
+                    <tr>
                         <td>Sub Judul</td>
                         <td>{{episode.sub_judul}}</td>
                     </tr>
@@ -130,12 +142,42 @@
 
                 </tbody>
             </table>
-
-            <button type="button" class="btn btn-primary mt-3" id="watchButton">Tonton</button>
         </div>
     </div>
     <hr class="my-4">
 </div>
+
+<script>
+    document.getElementById('rangeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const rangeValue = document.getElementById('rangeInput').value;
+        const id_tayangan = document.getElementById('id_tayangan').value;
+        const tipe_tayangan = document.getElementById('tipe_tayangan').value;
+        const durasi = document.getElementById('durasi').value;
+
+        fetch('../update_riwayat_nonton/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rangeValue: rangeValue,
+                id_tayangan: id_tayangan,
+                tipe_tayangan: tipe_tayangan,
+                durasi : durasi
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        location.reload()
+    });
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
