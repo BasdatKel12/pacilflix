@@ -24,6 +24,9 @@
     </ul>
 </div>
 {% else %}
+<span class="navbar-text" style="margin-left: 85px;">
+    {{ request.COOKIES.username }}
+</span>
 <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse"
     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
     aria-label="Toggle navigation">
@@ -38,17 +41,17 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/authentication/trailer/">Trailer</a>
+            <a class="nav-link" href="/tayangan/trailer">Trailer</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Tayangan</a>
+            <a class="nav-link" href="/tayangan/list/">Tayangan</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Kontributor</a>
+            <a class="nav-link" href="/daftar-kontributor">Kontributor</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -63,7 +66,7 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Langganan</a>
+            <a class="nav-link" href="/langganan">Langganan</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -89,7 +92,6 @@
 
     <h2>10 Tayangan Terbaik Minggu Ini</h2>
     <th><a href='./1'><button class="my-2 btn btn-primary">Global</button></a></th>
-    <th><a href='./0'><button class="my-2 btn btn-secondary">Lokal</button></a></th>
     <table class="table table-striped">
         <thead>
             <tr>

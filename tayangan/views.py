@@ -9,10 +9,7 @@ import json
 
 @csrf_exempt
 def update_watchtime(request):
-    # TODO: Filter Login
-    
-    # username = request.COOKIE['username']
-    username = 'LilyDreamer87'
+    username = request.COOKIES.get('username')
     if request.method == 'POST':
         data = json.loads(request.body)
 
@@ -46,10 +43,7 @@ def update_watchtime(request):
 
 @csrf_exempt
 def add_ulasan(request):
-    # TODO: Filter Login
-    
-    # username = request.COOKIE['username']
-    username = 'LilyDreamer87'
+    username = request.COOKIES.get('username')
     if request.method == 'POST':
         data = json.loads(request.body)
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -81,10 +75,8 @@ def list(request):
     return HttpResponseRedirect('./1')
 
 def list_filter(request, isGlobal: int):
-    # TODO: Filter Login
-    # username = request.POST.get("username")
-
-    username = 'LilyDreamer87'
+    
+    username = request.COOKIES.get('username')
     with connection.cursor() as cursor:
         if isGlobal:
             query = rf"""
@@ -215,6 +207,10 @@ def list_filter(request, isGlobal: int):
     return render(request, 'list.html', context=context)
 
 def search(request, judul: str):
+    status = False # TODO understand maksud kemal status
+    if 'username' in request.COOKIES :
+        status = True
+
     # Search
     with connection.cursor() as cursor:
         cursor.execute(rf"""
@@ -233,7 +229,8 @@ def search(request, judul: str):
         results = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
     context = {
-        'results' : results
+        'results' : results,
+        'status' : status,
     }
 
     return render(request, 'search.html', context)
@@ -633,7 +630,7 @@ def trailer_filter(request, isGlobal: int):
             columns = ("id_tayangan","id","judul","sinopsis","asal_negara","sinopsis_trailer","url_video_trailer","release_date_trailer","id_sutradara")
             list_series = parse_tuple_to_dict(cursor.fetchall(), columns)
 
-    status = False # TODO understand maksud kemal status
+    status = False
     if 'username' in request.COOKIES :
         status = True
 
