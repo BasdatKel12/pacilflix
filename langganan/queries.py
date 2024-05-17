@@ -29,7 +29,6 @@ def daftar_langganan(username):
         """, [username])
         result = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
-        print(columns)
         return [dict(zip(columns, row)) for row in result]
     
 def daftar_transaksi(username):

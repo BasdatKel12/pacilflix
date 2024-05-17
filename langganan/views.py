@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .queries import *
+from django.views.decorators.csrf import csrf_exempt
 
 def show_langganan_page(request):
     try:
@@ -23,6 +24,7 @@ def show_beli_page(request, nama_paket, dukungan_perangkat):
     paket = get_paket(nama_paket, dukungan_perangkat)[0]
     return render(request, "halaman_beli.html", {'paket' : paket})
 
+@csrf_exempt
 def bayar_paket(request, nama_paket, dukungan_perangkat):
     try:
         username = request.COOKIES['username']
