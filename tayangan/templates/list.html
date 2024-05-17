@@ -173,7 +173,7 @@
                     <th>{{film.release_date_trailer}}</th>
                     <th>
                         {% if active_paket %}
-                        <a href={{film.url_video_trailer}}><button class="btn btn-primary">Halaman</button></a>
+                        <a href='../film/{{film.id}}'><button class="btn btn-primary">Halaman</button></a>
                         {% comment %} <a href='../film/{{film.id}}'>LINK KE PAGE</a> {% endcomment %}
                         {% else %}
                         <a href='#'><button class="btn btn-danger">Belum Berlangganan</button></a>

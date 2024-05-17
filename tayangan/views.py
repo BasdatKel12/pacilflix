@@ -16,7 +16,7 @@ def add_ulasan(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         timestamp = datetime.datetime.now()
-        id_tayangan = data['deskripsi']
+        id_tayangan = data['id_tayangan']
         rating = data['rating']
         deskripsi = data['deskripsi']
 
@@ -36,6 +36,7 @@ def add_ulasan(request):
             );
             """)
         
+        return HttpResponseRedirect('./')
 
     return HttpResponse('INVALID METHOD')
 
@@ -44,7 +45,7 @@ def list(request):
         # return HttpResponseRedirect(reverse('authentication:login'))
     
     # username = request.POST.get("username")
-    username = 'SarahSunshine33'
+    username = 'LilyDreamer87'
     # TODO : FIX HARDCODING
     with connection.cursor() as cursor:
         # Get User Paket
