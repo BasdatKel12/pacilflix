@@ -22,21 +22,10 @@
         </tr>
         </thead>
         <tbody class="text-center">
-            {% if show_favorite_list %}
-            {% for favorite in show_favorite_list %}
+            {% if show_favorite_details %}
+            {% for favorite in show_favorite_details %}
                 <tr>
-                    <td>{{ favorite.judul }}
-                        <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="judul" id="judulToRefer">
-                            <input type="hidden" name="username" id="usernameToRefer">
-                            <button type="submit" class="btn btn-primary"
-                                data-judul="{{ favorite.judul }}" 
-                                data-username="{{ favorite.username }}">
-                            Details
-                            </button>
-                        </form>
-                    </td>
+                    <td>{{ favorite.judul }}</td>
                     <td>{{ favorite.timestamp }}</td>
                     <td>
                         <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
@@ -50,7 +39,7 @@
             {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="4">Belum ada tayangan favorit.</td>
+                    <td colspan="4">Belum ada daftar favorit.</td>
                 </tr>
             {% endif %}
         </tbody>
