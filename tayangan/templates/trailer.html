@@ -24,6 +24,9 @@
     </ul>
 </div>
 {% else %}
+<span class="navbar-text" style="margin-left: 85px;">
+    {{ request.COOKIES.username }}
+</span>
 <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse"
     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
     aria-label="Toggle navigation">
@@ -38,17 +41,17 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/authentication/trailer/">Trailer</a>
+            <a class="nav-link" href="/tayangan/trailer">Trailer</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Tayangan</a>
+            <a class="nav-link" href="/tayangan/list/">Tayangan</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Kontributor</a>
+            <a class="nav-link" href="/daftar-kontributor">Kontributor</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -63,7 +66,7 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Langganan</a>
+            <a class="nav-link" href="/langganan">Langganan</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -88,17 +91,7 @@
     </form>
 
     <h2>10 Tayangan Terbaik Minggu Ini</h2>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Pilih Opsi
-        </button>
-        <div class="my-2"></div>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Global</a>
-            <a class="dropdown-item" href="#">Berdasarkan Negara Pengguna</a>
-        </div>
-    </div>
+    <th><a href='./1'><button class="my-2 btn btn-primary">Global</button></a></th>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -108,37 +101,19 @@
                 <th>URL</th>
                 <th>Tanggal Rilis</th>
                 <th>Total View 7 Hari Terakhir</th>
-                <th>Tayangan</th>
             </tr>
         </thead>
         <tbody id="top10-list">
+            {% for tayangan in list_top_tayangan %}
             <tr>
-                <th>A</th>
-                <th>B</th>
-                <th>C</th>
-                <th>D</th>
-                <th>E</th>
-                <th>F</th>
-                <th>G</th>
+                <th>{{forloop.counter}}</th>
+                <th>{{tayangan.judul}}</th>
+                <th>{{tayangan.sinopsis}}</th>
+                <th><a href={{tayangan.url_video_trailer}}><button class="btn btn-secondary">Trailer</button></a></th>
+                <th>{{tayangan.release_date_trailer}}</th>
+                <th>{{tayangan.count}}</th>
             </tr>
-            <tr>
-                <th>I</th>
-                <th>J</th>
-                <th>K</th>
-                <th>L</th>
-                <th>M</th>
-                <th>N</th>
-                <th>O</th>
-            </tr>
-            <tr>
-                <th>Q</th>
-                <th>R</th>
-                <th>S</th>
-                <th>T</th>
-                <th>U</th>
-                <th>V</th>
-                <th>W</th>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 

@@ -29,7 +29,6 @@ def daftar_langganan(username):
         """, [username])
         result = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
-        print(columns)
         return [dict(zip(columns, row)) for row in result]
     
 def daftar_transaksi(username):
@@ -77,43 +76,3 @@ def bayar_paket_post(username, nama, metode_pembayaran):
         """, [username,date_now_str, end_date_str, nama, metode_pembayaran, date_now_timestamp_str])
 
     print("Berhasil membeli paket!")
-
-'''
-CREATE OR REPLACE FUNCTION check_and_insert_or_update_transaction()
-RETURNS TRIGGER AS $$
-DECLARE
-    active_transaction RECORD;
-BEGIN
-    SELECT * INTO active_transaction
-    FROM transaction
-    WHERE username = NEW.username
-      AND end_date_time > NOW()
-    LIMIT 1;
-
-    IF FOUND THEN
-        UPDATE transaction
-        SET start_date_time = NOW(),
-            end_date_time = NOW() + INTERVAL '30 days',
-            nama_paket = NEW.nama_paket,
-            metode_pembayaran = NEW.metode_pembayaran,
-            timestamp_pembayaran = NOW()
-        WHERE username = NEW.username
-          AND end_date_time > NOW();
-    ELSE
-        INSERT INTO transaction (username, start_date_time, end_date_time, nama_paket, metode_pembayaran, timestamp_pembayaran)
-        VALUES (NEW.username, NOW(), NOW() + INTERVAL '30 days', NEW.nama_paket, NEW.metode_pembayaran, NOW());
-    END IF;
-
-    RETURN NULL; 
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER before_insert_transaction
-BEFORE INSERT ON transaction
-FOR EACH ROW
-EXECUTE FUNCTION check_and_insert_or_update_transaction();
-
-
-'''
-
-

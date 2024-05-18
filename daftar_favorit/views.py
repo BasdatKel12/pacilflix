@@ -5,17 +5,14 @@ from datetime import datetime
 
 # Create your views here.
 def show_favorite_details(request):
-    # show_details = favorite_details(request)
-
-    # return render(request, "daftar_favorit_list.html", {'show_details': show_details })
 
     username = request.POST.get('username')
-    # username = 'MaxAdventure22'
-    # list_judul = 'Galau'
     list_judul = request.POST.get('judul')
     time = request.POST.get('timestamp')
 
+
     show_details = favorite_details(request, username, list_judul, time)
+
 
     return render(request, "daftar_favorit_list.html", {'show_details': show_details })
 
@@ -39,18 +36,17 @@ def delete_favorit(request):
     
     return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))   
 
-def add_favorit(request):
-    username = request.POST.get('username')
-    list_judul = request.POST.get('selectedText')
-    id_tayangan = request.POST.get('id_tayangan')
+def add_favorit(request, id: str):
+    username = request.COOKIES.get('username')
+    list_judul = request.POST.get('judul_list_value')
 
     with connection.cursor() as cursor:
         cursor.execute(rf"""SET search_path TO pacilflix;
         INSERT INTO daftar_favorit (timestamp, username, judul)
-        VALUES (NOW(), '{username}', '{judul}' );
-
+        VALUES (NOW(), '{username}', '{list_judul}' );
+        
         INSERT INTO tayangan_memiliki_daftar_favorit (id_tayangan, timestamp, username)
-        VALUES ('{id_tayangan}', NOW(), '{username}');
+        VALUES ('{id}', NOW(), '{username}');
         """)
     
     return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))

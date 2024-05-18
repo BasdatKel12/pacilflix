@@ -4,78 +4,6 @@
 <title>Series</title>
 {% endblock meta %}
 
-{% block auth_navbar %}
-{% if status == False %}
-<button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse"
-    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-    aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'authentication:login' %}">Login</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'authentication:register' %}">Register</a>
-        </li>
-    </ul>
-</div>
-{% else %}
-<button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse"
-    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-    aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-            <a class="nav-link" href="/">Homepage</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/tayangan/trailer/">Trailer</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/">Tayangan</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/">Kontributor</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/">Favorit</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/">Unduhan</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/">Langganan</a>
-        </li>
-        <span class="navbar-toggler-icon"></span>
-
-        <li class="nav-item">
-            <a class="nav-link" style="background-color:red; border-radius: 20px;"
-                href="/authentication/logout">Logout</a>
-        </li>
-    </ul>
-</div>
-{% endif %}
-{% endblock auth_navbar %}
-
 {% block content %}
 <div class="container py-4" style="margin-top: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); background-color: #fff;">
     <h1 class="row justify-content-center">
@@ -157,8 +85,12 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-secondary mt-3" id="downloadButton">Download</button>
-            <button type="button" class="btn btn-success mt-3" id="favoriteButton">Favorite</button>
+            <button type="button" class="btn btn-secondary my-1 mx-2" id="downloadButton" data-bs-toggle="modal" data-bs-target="#addDownloadModal">
+                Download
+            </button>
+            <button type="button" class="btn btn-success my-1 mx-2" id="favoriteButton" data-bs-toggle="modal" data-bs-target="#addFavoriteModal" >
+                Favorite
+            </button>
         </div>
     </div>
     <hr class="my-4">
@@ -174,7 +106,12 @@
                 <option value="2">2</option>
                 <option value="3" selected>3</option>
                 <option value="4">4</option>
-                <option value="5">5</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
             </select>
         </div>
         <div class="form-group">
@@ -211,6 +148,140 @@
     </div>
 </div>
 
+<div class="modal fade" id="addDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah ke Daftar Unduhan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div style="text-align: justify;" class="modal-body">
+                <p>Selamat! Anda telah berhasil mengunduh 
+                    <span class="fw-semibold">
+                        {{series.judul}}
+                    </span> 
+                    dan akan
+                    berlaku hingga 
+                    <span class="fw-semibold">
+                        {{ expiry_date }}
+                    </span>
+                    . Cek informasi selengkapnya
+                    pada halaman daftar unduhan.</p>
+            </div>
+            <div class="modal-footer">
+                <form action="{% url 'daftar_unduhan:add_unduhan' series.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                
+                    <button type="submit" class="btn btn-primary" href="/daftar_unduhan/show_daftar_unduhan">Ke Daftar Unduhan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addFavoriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah ke Daftar Favorit</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Judul daftar favorit</p>
+                <select id = "favoriteSelect" class="form-select" aria-label="Default select example">
+                    <option selected>Pilih daftar favoritmu!</option>
+                    <option value="1">Galau</option>
+                    <option value="2">Happy</option>
+                    <option value="3">Badmood</option>
+                </select>
+            </div>
+
+            
+
+            <div class="modal-footer">
+                <form action="{% url 'daftar_favorit:add_favorit' series.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="judul" id="judulToRefer">
+                    <input type="hidden" name="username" id="usernameToRefer">
+                    <input type="hidden" name="judul_list_value" id="selectedValue">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary addFavorite-button">Tambah</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector('.addFavorite-button').addEventListener('click', function () {
+    var selectElement = document.getElementById('favoriteSelect');
+    var selectedValue = selectElement.value;
+    var selectedText = selectElement.options[selectElement.selectedIndex].text;
+    document.getElementById('selectedValue').value = selectedText;
+});
+</script>
+
+<script>
+    $('.addFavorite-button').each(function () {
+        $(this).on('click', function () {
+            var username = $(this).data('username');
+            var judul_list = $(this).data('judul_list');
+            document.getElementById('selectedText').value = judul_list_value;
+        });
+});
+</script>
+
+
+<script>
+    document.getElementById('downloadButton').addEventListener('click', function() {
+        const id_tayangan = 'example_id';  // Replace with actual id_tayangan
+
+        fetch('/add_unduhan/{{series.id_tayangan}}', {  // Adjust the endpoint URL if necessary
+            method: 'GET',
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 500) {
+                    alert('Error 500: Internal Server Error. Please try again later.');
+                    return Promise.reject('Internal Server Error');
+                } else {
+                    return response.json().then(errorData => {
+                        return Promise.reject(errorData.message || 'Unknown error');
+                    });
+                }
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            alert('Request successful');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (error !== 'Internal Server Error') {
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
 <script>
     document.getElementById('ratingForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -230,14 +301,29 @@
                 deskripsi: deskripsi
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 500) {
+                    alert('Database Tertrigger, pengguna sudah memberikan komentar');
+                    return Promise.reject('Internal Server Error');
+                } else {
+                    return response.json().then(errorData => {
+                        return Promise.reject(errorData.message || 'Unknown error');
+                    });
+                }
+            }
+            return response.json();
         })
-        .catch((error) => {
+        .then(data => {
+            console.log(data);
+            location.reload();
+        })
+        .catch(error => {
             console.error('Error:', error);
+            if (error !== 'Internal Server Error') {
+                alert('Database Tertrigger, pengguna sudah memberikan komentar');
+            }
         });
-        location.reload()
     });
 </script>
 

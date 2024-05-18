@@ -38,7 +38,7 @@ def login_user(request):
                 SET search_path to public; 
                 """)
             request.session['username'] = username
-            response = HttpResponseRedirect(reverse("main:homepage")) 
+            response = HttpResponseRedirect(reverse("tayangan:list")) 
             response.set_cookie('username', username)
             response.set_cookie('negara_asal', user[2])
             response.set_cookie('last_login', str(datetime.datetime.now()))

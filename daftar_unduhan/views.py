@@ -24,15 +24,29 @@ def delete_unduhan(request):
     
     return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
 
-def add_unduhan(request):
-    username = request.POST.get('username')
-    
-    id_tayangan = request.POST.get('id_tayangan')
+def add_unduhan(request, id: str):
+    username = request.COOKIES.get('username')
+    # id_tayangan = request.POST.get('id_tayangan')
 
     with connection.cursor() as cursor:
         cursor.execute(rf"""SET search_path TO pacilflix;
-        INSERT INTO tayangan_terunduh (timestamp, username, judul)
-        VALUES ('{id_tayangan}', '{username}', NOW() );
+        INSERT INTO tayangan_terunduh(id_tayangan, username, timestamp)
+        VALUES ('{id}', '{username}', NOW() );
         """)
     
     return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
+
+# def add_favorit(request, id: str):
+#     username = request.COOKIES.get('username')
+#     list_judul = request.POST.get('judul_list_value')
+
+#     with connection.cursor() as cursor:
+#         cursor.execute(rf"""SET search_path TO pacilflix;
+#         INSERT INTO daftar_favorit (timestamp, username, judul)
+#         VALUES (NOW(), '{username}', '{list_judul}' );
+        
+#         INSERT INTO tayangan_memiliki_daftar_favorit (id_tayangan, timestamp, username)
+#         VALUES ('{id}', NOW(), '{username}');
+#         """)
+    
+#     return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))

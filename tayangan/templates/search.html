@@ -24,6 +24,9 @@
     </ul>
 </div>
 {% else %}
+<span class="navbar-text" style="margin-left: 85px;">
+    {{ request.COOKIES.username }}
+</span>
 <button class="navbar-toggler ml-auto custom-toggler" type="button" data-bs-toggle="collapse"
     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
     aria-label="Toggle navigation">
@@ -38,17 +41,17 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/tayangan/trailer/">Trailer</a>
+            <a class="nav-link" href="/tayangan/trailer">Trailer</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Tayangan</a>
+            <a class="nav-link" href="/tayangan/list/">Tayangan</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Kontributor</a>
+            <a class="nav-link" href="/daftar-kontributor">Kontributor</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -63,7 +66,7 @@
         <span class="navbar-toggler-icon"></span>
 
         <li class="nav-item">
-            <a class="nav-link" href="/">Langganan</a>
+            <a class="nav-link" href="/langganan">Langganan</a>
         </li>
         <span class="navbar-toggler-icon"></span>
 
@@ -95,7 +98,9 @@
                 <th>Sinopsis</th>
                 <th>URL Trailer</th>
                 <th>Tanggal Rilis Trailer</th>
-                <th>Tayangan</th>
+                {% if status %}
+                    <th>Tayangan</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -105,10 +110,12 @@
                 <td>{{result.sinopsis}}</td>
                 <td><a href="{{result.url_video_trailer}}">{{result.url_video_trailer}}</a></td>
                 <td>{{result.release_date_trailer}}</td>
-                {% if result.is_film %}
-                    <td><a href="../film/{{result.id}}"><button type="button" class="btn btn-primary">Halaman</button></a></td>
-                {% else %}
-                    <td><a href="../series/{{result.id}}"><button type="button" class="btn btn-primary">Halaman</button></a></td>
+                {% if status %}
+                    {% if result.is_film %}
+                        <td><a href="../film/{{result.id}}"><button type="button" class="btn btn-primary">Halaman</button></a></td>
+                    {% else %}
+                        <td><a href="../series/{{result.id}}"><button type="button" class="btn btn-primary">Halaman</button></a></td>
+                    {% endif %}
                 {% endif %}
             </tr>
             {% endfor %}

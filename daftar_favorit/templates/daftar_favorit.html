@@ -25,12 +25,19 @@
             {% if show_favorite_list %}
             {% for favorite in show_favorite_list %}
                 <tr>
-                    <td>{{ favorite.judul }}
+                    <td>
+                        <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="judul" value="{{ favorite.judul }}">
+                            <input type="hidden" name="username" value="{{ favorite.username }}">
+                            <input type="hidden" name="timestamp" value="{{ favorite.timestamp }}">
+                            <a href="#" class="details-link" onclick="this.closest('form').submit();">{{ favorite.judul }}</a>
+                        </form>
                         
                     </td>
                     <td>{{ favorite.timestamp }}</td>
                     <td>
-                        <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post">
+                        <!-- <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="judul" id="judulToRefer">
                             <input type="hidden" name="username" id="usernameToRefer">
@@ -41,7 +48,7 @@
                                 date-timestamp="{{ favorite.timestamp }}">
                             Details
                             </button>
-                        </form>
+                        </form> -->
                         <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
                             data-judul="{{ favorite.judul }}" 
                             data-username="{{ favorite.username }}" 

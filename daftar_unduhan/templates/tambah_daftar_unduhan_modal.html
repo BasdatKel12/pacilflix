@@ -1,7 +1,7 @@
 
 
 
-<form action="{% url 'daftar_unduhan:add_favorit' %}" method="post">
+<form action="{% url 'daftar_unduhan:add_unduhan' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="username" id="usernameToRefer">
     <input type="hidden" name="id_tayangan" id="id_tayanganToRefer">
@@ -20,7 +20,7 @@
 });
 </script>
  
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

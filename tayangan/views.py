@@ -1,18 +1,17 @@
 from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 import datetime
+from django.utils import timezone
+from datetime import timedelta
 import json
 
 @csrf_exempt
 def update_watchtime(request):
-    # TODO: Filter Login
-    
-    # username = request.COOKIE['username']
-    username = 'LilyDreamer87'
+    username = request.COOKIES.get('username')
     if request.method == 'POST':
         data = json.loads(request.body)
 
@@ -46,10 +45,7 @@ def update_watchtime(request):
 
 @csrf_exempt
 def add_ulasan(request):
-    # TODO: Filter Login
-    
-    # username = request.COOKIE['username']
-    username = 'LilyDreamer87'
+    username = request.COOKIES.get('username')
     if request.method == 'POST':
         data = json.loads(request.body)
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -58,33 +54,127 @@ def add_ulasan(request):
         deskripsi = data['deskripsi']
 
         with connection.cursor() as cursor:
-            # Get User Paket
-            cursor.execute(rf"""
-            SET search_path to pacilflix;
-            INSERT INTO
-            ulasan (username, timestamp, id_tayangan, rating, deskripsi)
-            VALUES
-            (
-            '{username}',
-            '{timestamp}',
-            '{id_tayangan}',
-            {rating},
-            '{deskripsi}'
-            );
-            """)
+            try: 
+                # Insert Ulasan
+                cursor.execute(rf"""
+                SET search_path to pacilflix;
+                INSERT INTO
+                ulasan (username, timestamp, id_tayangan, rating, deskripsi)
+                VALUES
+                (
+                '{username}',
+                '{timestamp}',
+                '{id_tayangan}',
+                {rating},
+                '{deskripsi}'
+                );
+                """)
+            except Exception as e:
+                return JsonResponse({}, status=500)
         
-        return HttpResponse({'status': 'OK'})
+        return JsonResponse({}, status=200)
 
-    return HttpResponse({'status': 'INVALID METHOD'})
+    return JsonResponse({}, status=400)
 
 def list(request):
-    # if 'username' not in request.COOKIES :
-        # return HttpResponseRedirect(reverse('authentication:login'))
+    return HttpResponseRedirect('./1')
+
+def list_filter(request, isGlobal: int):
     
-    # username = request.POST.get("username")
-    username = 'LilyDreamer87'
-    # TODO : FIX HARDCODING
+    username = request.COOKIES.get('username')
     with connection.cursor() as cursor:
+        if isGlobal:
+            query = rf"""
+                SET search_path TO pacilflix;
+
+                WITH film_durasi AS (
+                    SELECT id_tayangan, durasi_film AS durasi, 'film' AS source
+                    FROM film
+                ), 
+                episode_durasi AS (
+                    SELECT id_series AS id_tayangan, SUM(durasi) AS durasi, 'series' AS source
+                    FROM episode
+                    GROUP BY id_series
+                ), 
+                tayangan_durasi AS (
+                    SELECT 
+                        R.*, 
+                        COALESCE(F.durasi, E.durasi) AS durasi,
+                        COALESCE(F.source, E.source) AS source,
+                        EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60 AS time_diff 
+                    FROM 
+                        riwayat_nonton R
+                    LEFT JOIN 
+                        film_durasi F ON R.id_tayangan = F.id_tayangan
+                    LEFT JOIN 
+                        episode_durasi E ON R.id_tayangan = E.id_tayangan
+                )
+
+                SELECT 
+                    TD.source,
+                    TD.id_tayangan,
+                    COUNT(*),
+                    T.*
+                FROM riwayat_nonton R
+                LEFT JOIN tayangan_durasi TD ON R.id_tayangan = TD.id_tayangan
+                LEFT JOIN tayangan T on T.id = TD.id_tayangan
+                WHERE 
+                    TD.time_diff >= (TD.durasi * 70 / 100) AND 
+                    R.end_date_time >= NOW() - INTERVAL '7 days'
+                GROUP BY TD.id_tayangan, T.id, TD.source
+                ORDER BY count DESC
+                LIMIT 10;
+                """
+        else:
+            asal_negara = request.COOKIES.get('negara_asal')
+            query = rf"""
+                SET search_path TO pacilflix;
+
+                WITH film_durasi AS (
+                    SELECT id_tayangan, durasi_film AS durasi, 'film' AS source
+                    FROM film
+                ), 
+                episode_durasi AS (
+                    SELECT id_series AS id_tayangan, SUM(durasi) AS durasi, 'series' AS source
+                    FROM episode
+                    GROUP BY id_series
+                ), 
+                tayangan_durasi AS (
+                    SELECT 
+                        R.*, 
+                        COALESCE(F.durasi, E.durasi) AS durasi,
+                        COALESCE(F.source, E.source) AS source,
+                        EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60 AS time_diff 
+                    FROM 
+                        riwayat_nonton R
+                    LEFT JOIN 
+                        film_durasi F ON R.id_tayangan = F.id_tayangan
+                    LEFT JOIN 
+                        episode_durasi E ON R.id_tayangan = E.id_tayangan
+                )
+
+                SELECT 
+                    TD.source,
+                    TD.id_tayangan,
+                    COUNT(*),
+                    T.*
+                FROM riwayat_nonton R
+                LEFT JOIN tayangan_durasi TD ON R.id_tayangan = TD.id_tayangan
+                LEFT JOIN tayangan T on T.id = TD.id_tayangan
+                WHERE 
+                    TD.time_diff >= (TD.durasi * 70 / 100) AND 
+                    R.end_date_time >= NOW() - INTERVAL '7 days' AND
+                    asal_negara = '{asal_negara}'
+                GROUP BY TD.id_tayangan, T.id, TD.source
+                ORDER BY count DESC
+                LIMIT 10;
+            """
+
+        # Top Tayangan
+        cursor.execute(query)
+        columns = ("source","id_tayangan","count","id","judul","sinopsis","asal_negara","sinopsis_trailer","url_video_trailer","release_date_trailer","id_sutradara")
+        list_top_tayangan = parse_tuple_to_dict(cursor.fetchall(), columns)
+
         # Get User Paket
         cursor.execute(rf"""
         SET search_path to pacilflix;
@@ -114,6 +204,7 @@ def list(request):
         list_series = parse_tuple_to_dict(cursor.fetchall(), columns)
 
     context = {
+        'list_top_tayangan' : list_top_tayangan,
         'active_paket' : active_paket,
         'list_film' : list_film,
         'list_series' : list_series
@@ -121,6 +212,10 @@ def list(request):
     return render(request, 'list.html', context=context)
 
 def search(request, judul: str):
+    status = False # TODO understand maksud kemal status
+    if 'username' in request.COOKIES :
+        status = True
+
     # Search
     with connection.cursor() as cursor:
         cursor.execute(rf"""
@@ -139,13 +234,14 @@ def search(request, judul: str):
         results = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
     context = {
-        'results' : results
+        'results' : results,
+        'status' : status,
     }
 
     return render(request, 'search.html', context)
 
 def film(request, id: str):
-    # TODO: FIX BUTTON TONTON, DOWNLOAD, AND FAVORITE IN FILM
+    # TODO: FIX BUTTON DOWNLOAD, AND FAVORITE IN FILM
     
     with connection.cursor() as cursor:
         # Get Film
@@ -246,6 +342,11 @@ def film(request, id: str):
         columns = ("id_tayangan","username","timestamp","rating","deskripsi")
         list_ulasan = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
+        # current time + 7 hari
+        now_plus_7_days = timezone.now() + timedelta(days=7)
+        
+        
+
     context = {
         'film' : film,
         'total_views' : total_views,
@@ -254,7 +355,8 @@ def film(request, id: str):
         'list_pemain' : list_pemain,
         'list_skenario' : list_skenario,
         'sutradara' : sutradara,
-        'list_ulasan' : list_ulasan
+        'list_ulasan' : list_ulasan,
+        'expiry_date': now_plus_7_days,
     }    
     
     return render(request, 'view_film.html', context=context)
@@ -369,6 +471,9 @@ def series(request, id: str):
         columns = ("id_tayangan","username","timestamp","rating","deskripsi")
         list_ulasan = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
+        # current time + 7 hari
+        now_plus_7_days = timezone.now() + timedelta(days=7)
+
     context = {
         'series' : series,
         'list_episode' : list_episode,
@@ -378,13 +483,13 @@ def series(request, id: str):
         'list_pemain' : list_pemain,
         'list_skenario' : list_skenario,
         'sutradara' : sutradara,
-        'list_ulasan' : list_ulasan
+        'list_ulasan' : list_ulasan,
+        'expiry_date': now_plus_7_days,
     }
 
     return render(request, 'view_series.html', context)
 
 def episode(request, id: str):
-    # TODO: ADD SLIDER & SIMPAN RIWAYAT TONTON
     id_series = id[:id.rfind('-')]
     id_episode = int(id[id.rfind('-')+1:])
 
@@ -423,12 +528,104 @@ def episode(request, id: str):
 
     return render(request, 'view_episode.html', context=context)
 
+def trailer(request):
+    return HttpResponseRedirect('./1')
+
 @csrf_exempt
-def show_trailer(request):
+def trailer_filter(request, isGlobal: int):
     if request.method == 'GET':        
         with connection.cursor() as cursor:
-            # TODO
-            # Fetch Top 10
+            if isGlobal:
+                query = rf"""
+                    SET search_path TO pacilflix;
+
+                    WITH film_durasi AS (
+                        SELECT id_tayangan, durasi_film AS durasi, 'film' AS source
+                        FROM film
+                    ), 
+                    episode_durasi AS (
+                        SELECT id_series AS id_tayangan, SUM(durasi) AS durasi, 'series' AS source
+                        FROM episode
+                        GROUP BY id_series
+                    ), 
+                    tayangan_durasi AS (
+                        SELECT 
+                            R.*, 
+                            COALESCE(F.durasi, E.durasi) AS durasi,
+                            COALESCE(F.source, E.source) AS source,
+                            EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60 AS time_diff 
+                        FROM 
+                            riwayat_nonton R
+                        LEFT JOIN 
+                            film_durasi F ON R.id_tayangan = F.id_tayangan
+                        LEFT JOIN 
+                            episode_durasi E ON R.id_tayangan = E.id_tayangan
+                    )
+
+                    SELECT 
+                        TD.source,
+                        TD.id_tayangan,
+                        COUNT(*),
+                        T.*
+                    FROM riwayat_nonton R
+                    LEFT JOIN tayangan_durasi TD ON R.id_tayangan = TD.id_tayangan
+                    LEFT JOIN tayangan T on T.id = TD.id_tayangan
+                    WHERE 
+                        TD.time_diff >= (TD.durasi * 70 / 100) AND 
+                        R.end_date_time >= NOW() - INTERVAL '7 days'
+                    GROUP BY TD.id_tayangan, T.id, TD.source
+                    ORDER BY count DESC
+                    LIMIT 10;
+                    """
+            else:
+                asal_negara = request.COOKIES.get('negara_asal')
+                query = rf"""
+                    SET search_path TO pacilflix;
+
+                    WITH film_durasi AS (
+                        SELECT id_tayangan, durasi_film AS durasi, 'film' AS source
+                        FROM film
+                    ), 
+                    episode_durasi AS (
+                        SELECT id_series AS id_tayangan, SUM(durasi) AS durasi, 'series' AS source
+                        FROM episode
+                        GROUP BY id_series
+                    ), 
+                    tayangan_durasi AS (
+                        SELECT 
+                            R.*, 
+                            COALESCE(F.durasi, E.durasi) AS durasi,
+                            COALESCE(F.source, E.source) AS source,
+                            EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60 AS time_diff 
+                        FROM 
+                            riwayat_nonton R
+                        LEFT JOIN 
+                            film_durasi F ON R.id_tayangan = F.id_tayangan
+                        LEFT JOIN 
+                            episode_durasi E ON R.id_tayangan = E.id_tayangan
+                    )
+
+                    SELECT 
+                        TD.source,
+                        TD.id_tayangan,
+                        COUNT(*),
+                        T.*
+                    FROM riwayat_nonton R
+                    LEFT JOIN tayangan_durasi TD ON R.id_tayangan = TD.id_tayangan
+                    LEFT JOIN tayangan T on T.id = TD.id_tayangan
+                    WHERE 
+                        TD.time_diff >= (TD.durasi * 70 / 100) AND 
+                        R.end_date_time >= NOW() - INTERVAL '7 days' AND
+                        asal_negara = '{asal_negara}'
+                    GROUP BY TD.id_tayangan, T.id, TD.source
+                    ORDER BY count DESC
+                    LIMIT 10;
+                """
+
+            # Top Tayangan
+            cursor.execute(query)
+            columns = ("source","id_tayangan","count","id","judul","sinopsis","asal_negara","sinopsis_trailer","url_video_trailer","release_date_trailer","id_sutradara")
+            list_top_tayangan = parse_tuple_to_dict(cursor.fetchall(), columns)
 
             # Semua Film
             cursor.execute(rf"""
@@ -448,11 +645,12 @@ def show_trailer(request):
             columns = ("id_tayangan","id","judul","sinopsis","asal_negara","sinopsis_trailer","url_video_trailer","release_date_trailer","id_sutradara")
             list_series = parse_tuple_to_dict(cursor.fetchall(), columns)
 
-    status = False # TODO understand maksud kemal status
+    status = False
     if 'username' in request.COOKIES :
         status = True
 
     context = {
+        'list_top_tayangan': list_top_tayangan,
         'status': status,
         'list_film': list_film,
         'list_series': list_series

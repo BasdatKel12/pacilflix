@@ -1,7 +1,7 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFavoriteModal">
     Tambah
 </button>
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addFavoriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -28,7 +28,7 @@
             </script>
 
             <div class="modal-footer">
-                <form action="{% url 'daftar_favorit:add_favorit' %}" method="post">
+                <form action="{% url 'daftar_favorit:add_favorit' tayangan.id %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="judul" id="judulToRefer">
                     <input type="hidden" name="username" id="usernameToRefer">
@@ -45,11 +45,11 @@
 <script>
     $('.add-button').each(function () {
         $(this).on('click', function () {
-            var username = $(this).data('username');
-            var id_tayangan = $(this).data('id_tayangan');
+            // var username = $(this).data('username');
+            // var id_tayangan = $(this).data('id_tayangan');
             var judul_list = $(this).data('judul_list');
-            document.getElementById('usernameToRefer').value = username;
-            document.getElementById('id_tayanganToRefer').value = id_tayangan;
+            // document.getElementById('usernameToRefer').value = username;
+            // document.getElementById('id_tayanganToRefer').value = id_tayangan;
             document.getElementById('selectedText').value = judul_list;
         });
 });
