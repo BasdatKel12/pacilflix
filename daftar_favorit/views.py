@@ -1,12 +1,23 @@
 from django.shortcuts import render
 from .queries import *
 from django.db import connection
+from datetime import datetime
 
 # Create your views here.
 def show_favorite_details(request):
-    show_details = favorite_details(request)
+    # show_details = favorite_details(request)
 
-    return render(request, "daftar_favorit_details.html", {'show_details': show_details })
+    # return render(request, "daftar_favorit_list.html", {'show_details': show_details })
+
+    username = request.POST.get('username')
+    # username = 'MaxAdventure22'
+    # list_judul = 'Galau'
+    list_judul = request.POST.get('judul')
+    time = request.POST.get('timestamp')
+
+    show_details = favorite_details(request, username, list_judul, time)
+
+    return render(request, "daftar_favorit_list.html", {'show_details': show_details })
 
 def show_daftar_favorit(request):
     show_favorite_list = favorite_list(request)
@@ -19,6 +30,7 @@ def tambah_daftar_favorit(request):
 def delete_favorit(request):
     username = request.POST.get('username')
     judul = request.POST.get('judul')
+    
 
     with connection.cursor() as cursor:
         cursor.execute(rf"""SET search_path TO pacilflix;
