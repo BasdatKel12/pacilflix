@@ -2,8 +2,10 @@ from django.shortcuts import render
 from .queries import *
 from django.db import connection
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+@csrf_exempt
 def show_favorite_details(request):
 
     username = request.POST.get('username')
@@ -24,6 +26,7 @@ def show_daftar_favorit(request):
 def tambah_daftar_favorit(request):
     return render(request, 'tambah_daftar_favorit_modal.html')
 
+@csrf_exempt
 def delete_favorit(request):
     username = request.POST.get('username')
     judul = request.POST.get('judul')
@@ -36,6 +39,7 @@ def delete_favorit(request):
     
     return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))   
 
+@csrf_exempt
 def add_favorit(request, id: str):
     username = request.COOKIES.get('username')
     list_judul = request.POST.get('judul_list_value')
