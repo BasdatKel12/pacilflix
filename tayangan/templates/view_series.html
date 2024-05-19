@@ -255,14 +255,8 @@
             return response.json();
         })
         .then(data => {
-            console.log(data);
-            alert('Request successful');
         })
         .catch(error => {
-            console.error('Error:', error);
-            if (error !== 'Internal Server Error') {
-                alert('An error occurred: ' + error);
-            }
         });
     });
 

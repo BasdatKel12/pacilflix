@@ -40,6 +40,8 @@ def add_favorit(request, id: str):
     username = request.COOKIES.get('username')
     list_judul = request.POST.get('judul_list_value')
 
+    print('DBG', id, '+', list_judul)
+
     with connection.cursor() as cursor:
         cursor.execute(rf"""SET search_path TO pacilflix;
         INSERT INTO daftar_favorit (timestamp, username, judul)
