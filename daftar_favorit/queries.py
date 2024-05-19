@@ -6,11 +6,6 @@ def favorite_list(request):
     username = request.COOKIES.get('username')
     
     with connection.cursor() as cursor:
-        # cursor.execute(rf"""SET search_path TO pacilflix;
-        # SELECT f.judul, f.timestamp, f.username
-        #     FROM daftar_favorit f
-        #     WHERE f.username = '{username}';
-        # """)
 
         cursor.execute(rf"""
         SET search_path TO pacilflix;
@@ -39,13 +34,6 @@ def favorite_list(request):
         return [dict(zip(columns, row)) for row in result]
 
 def favorite_details(request, username, list_judul, time):
-    
-
-    # username = request.POST.get('username')
-    # # username = 'MaxAdventure22'
-    # # list_judul = 'Galau'
-    # list_judul = request.POST.get('judul')
-    # time = request.POST.get('timestamp')
 
     with connection.cursor() as cursor:
         cursor.execute(rf"""SET search_path TO pacilflix;
@@ -57,10 +45,8 @@ def favorite_details(request, username, list_judul, time):
 
         """)
 
-        
         result = cursor.fetchall()
 
-        
         columns = [col[0] for col in cursor.description]
         return [dict(zip(columns, row)) for row in result]
         
