@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .queries import *
 from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def show_daftar_unduhan(request):
@@ -10,6 +11,7 @@ def show_daftar_unduhan(request):
 def tambah_daftar_unduhan(request):
     return render(request, 'tambah_daftar_unduhan_modal.html')
 
+@csrf_exempt
 def delete_unduhan(request):
     username = request.POST.get('username')
     id_tayangan = request.POST.get('id_tayangan')
@@ -24,6 +26,7 @@ def delete_unduhan(request):
     
     return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
 
+@csrf_exempt
 def add_unduhan(request, id: str):
     username = request.COOKIES.get('username')
     # id_tayangan = request.POST.get('id_tayangan')
@@ -35,18 +38,3 @@ def add_unduhan(request, id: str):
         """)
     
     return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
-
-# def add_favorit(request, id: str):
-#     username = request.COOKIES.get('username')
-#     list_judul = request.POST.get('judul_list_value')
-
-#     with connection.cursor() as cursor:
-#         cursor.execute(rf"""SET search_path TO pacilflix;
-#         INSERT INTO daftar_favorit (timestamp, username, judul)
-#         VALUES (NOW(), '{username}', '{list_judul}' );
-        
-#         INSERT INTO tayangan_memiliki_daftar_favorit (id_tayangan, timestamp, username)
-#         VALUES ('{id}', NOW(), '{username}');
-#         """)
-    
-#     return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))
