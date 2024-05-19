@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 import datetime
+from django.utils import timezone
+from datetime import timedelta
 import json
 
 @csrf_exempt
@@ -340,6 +342,11 @@ def film(request, id: str):
         columns = ("id_tayangan","username","timestamp","rating","deskripsi")
         list_ulasan = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
+        # current time + 7 hari
+        now_plus_7_days = timezone.now() + timedelta(days=7)
+        
+        
+
     context = {
         'film' : film,
         'total_views' : total_views,
@@ -348,7 +355,8 @@ def film(request, id: str):
         'list_pemain' : list_pemain,
         'list_skenario' : list_skenario,
         'sutradara' : sutradara,
-        'list_ulasan' : list_ulasan
+        'list_ulasan' : list_ulasan,
+        'expiry_date': now_plus_7_days,
     }    
     
     return render(request, 'view_film.html', context=context)
@@ -463,6 +471,9 @@ def series(request, id: str):
         columns = ("id_tayangan","username","timestamp","rating","deskripsi")
         list_ulasan = parse_tuple_to_dict(cursor.fetchall(), cols=columns)
 
+        # current time + 7 hari
+        now_plus_7_days = timezone.now() + timedelta(days=7)
+
     context = {
         'series' : series,
         'list_episode' : list_episode,
@@ -472,7 +483,8 @@ def series(request, id: str):
         'list_pemain' : list_pemain,
         'list_skenario' : list_skenario,
         'sutradara' : sutradara,
-        'list_ulasan' : list_ulasan
+        'list_ulasan' : list_ulasan,
+        'expiry_date': now_plus_7_days,
     }
 
     return render(request, 'view_series.html', context)

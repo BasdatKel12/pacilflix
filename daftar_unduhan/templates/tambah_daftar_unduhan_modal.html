@@ -1,7 +1,26 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-    Tambah
-</button> 
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+
+<form action="{% url 'daftar_unduhan:add_unduhan' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="username" id="usernameToRefer">
+    <input type="hidden" name="id_tayangan" id="id_tayanganToRefer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+    <button type="submit" class="btn btn-primary add-button">Tambah</button>
+</form>
+
+<script>
+    $('.add-button').each(function () {
+        $(this).on('click', function () {
+            var username = $(this).data('username');
+            var id_tayangan = $(this).data('id_tayangan');
+            document.getElementById('usernameToRefer').value = username;
+            document.getElementById('id_tayanganToRefer').value = id_tayangan;
+        });
+});
+</script>
+ 
+<div class="modal fade" id="addDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

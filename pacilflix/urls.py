@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('authentication/', include('authentication.urls')),
     path('ulasan/', include('ulasan.urls')),
+    path('daftar_favorit/', include('daftar_favorit.urls')),
     path('daftar_unduhan/', include('daftar_unduhan.urls')),
     path('daftar-kontributor/', include('daftar_kontributor.urls')),
     path('langganan/', include('langganan.urls')),

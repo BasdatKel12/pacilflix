@@ -1,9 +1,9 @@
+
 {% extends 'base.html' %}
 
 {% block meta %}
-    <title>Daftar Unduhan</title>
+    <title>Daftar Favorit</title>
 {% endblock meta %}
-
 
 {% block content %}
 <div class="container mt-4">
@@ -22,18 +22,51 @@
         </tr>
         </thead>
         <tbody class="text-center">
-          <tr>
-            <td>Perkenalkan Nama Saya Budiono Siregar</td>
-            <td>2/04/2020</td>
-            <td>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Hapus
-                </button>
-            </td>
-          </tr>
+            {% if show_favorite_list %}
+            {% for favorite in show_favorite_list %}
+                <tr>
+                    <td>
+                        <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="judul" value="{{ favorite.judul }}">
+                            <input type="hidden" name="username" value="{{ favorite.username }}">
+                            <input type="hidden" name="timestamp" value="{{ favorite.timestamp }}">
+                            <a href="#" class="details-link" onclick="this.closest('form').submit();">{{ favorite.judul }}</a>
+                        </form>
+                        
+                    </td>
+                    <td>{{ favorite.timestamp }}</td>
+                    <td>
+                        <!-- <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="judul" id="judulToRefer">
+                            <input type="hidden" name="username" id="usernameToRefer">
+                            <input type="hidden" name="timestamp" id="timestampToRefer">
+                            <button type="submit" class="btn btn-primary details-button"
+                                data-judul="{{ favorite.judul }}" 
+                                data-username="{{ favorite.username }}"
+                                date-timestamp="{{ favorite.timestamp }}">
+                            Details
+                            </button>
+                        </form> -->
+                        <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                            data-judul="{{ favorite.judul }}" 
+                            data-username="{{ favorite.username }}" 
+                            data-timestamp="{{ favorite.timestamp }}">
+                        Hapus
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4">Belum ada tayangan favorit.</td>
+                </tr>
+            {% endif %}
         </tbody>
-      </table>
+    </table>
 </div>
+
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -45,12 +78,43 @@
                 <p>Apakah anda yakin ingin menghapus judul ini dari daftar favorit?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Hapus</button>
+                <form action="{% url 'daftar_favorit:delete_favorit' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="judul" id="judulToDelete">
+                    <input type="hidden" name="username" id="usernameToDelete">
+                    <input type="hidden" name="timestamp" id="timestampToDelete">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+$('.delete-button').each(function () {
+    $(this).on('click', function () {
+        var judul = $(this).data('judul');
+        var username = $(this).data('username');
+        var timestamp = $(this).data('timestamp');
+        document.getElementById('judulToDelete').value = judul;
+        document.getElementById('usernameToDelete').value = username;
+        document.getElementById('timestampToDelete').value = timestamp;
+    });
+});
+
+$('.details-button').each(function () {
+    $(this).on('click', function () {
+        var judul = $(this).data('judul');
+        var username = $(this).data('username');
+        var timestamp = $(this).data('timestamp');
+        document.getElementById('judulToRefer').value = judul;
+        document.getElementById('usernameToRefer').value = username;
+        document.getElementById('timestampToRefer').value = timestamp;
+    });
+});
+</script>
+
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -74,5 +138,4 @@
         </div>
     </div>
 </div>
-
 {% endblock content %}

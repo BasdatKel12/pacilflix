@@ -1,7 +1,7 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFavoriteModal">
     Tambah
 </button>
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addFavoriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,10 +17,40 @@
                     <option value="3">Badmood</option>
                 </select>
             </div>
+
+            <script>
+                document.getElementById('form-select').addEventListener('click', function() {
+                    var selectElement = document.getElementById('favoriteSelect');
+                    var selectedValue = selectElement.value;
+                    var selectedText = selectElement.options[selectElement.selectedIndex].text;
+                    alert('Selected Value: ' + selectedValue + '\nSelected Text: ' + selectedText);
+                });
+            </script>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Tambah</button>
+                <form action="{% url 'daftar_favorit:add_favorit' tayangan.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="judul" id="judulToRefer">
+                    <input type="hidden" name="username" id="usernameToRefer">
+                    <input type="hidden" name="judul_list" id="selectedText">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary add-button">Tambah</button>
+                </form>
+                
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('.add-button').each(function () {
+        $(this).on('click', function () {
+            // var username = $(this).data('username');
+            // var id_tayangan = $(this).data('id_tayangan');
+            var judul_list = $(this).data('judul_list');
+            // document.getElementById('usernameToRefer').value = username;
+            // document.getElementById('id_tayanganToRefer').value = id_tayangan;
+            document.getElementById('selectedText').value = judul_list;
+        });
+});
+</script>
