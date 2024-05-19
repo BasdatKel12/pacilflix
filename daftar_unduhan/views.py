@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .queries import *
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 # Create your views here.
 def show_daftar_unduhan(request):
@@ -15,14 +16,14 @@ def tambah_daftar_unduhan(request):
 def delete_unduhan(request):
     username = request.POST.get('username')
     id_tayangan = request.POST.get('id_tayangan')
-
-    print(username)
-    print(id_tayangan)
-
-    with connection.cursor() as cursor:
-        cursor.execute(rf"""SET search_path TO pacilflix;
-        DELETE FROM tayangan_terunduh u WHERE u.username = '{username}' AND u.id_tayangan = '{id_tayangan}'
-        """)
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(rf"""SET search_path TO pacilflix;
+            DELETE FROM tayangan_terunduh u WHERE u.username = '{username}' AND u.id_tayangan = '{id_tayangan}'
+            """)
+    except Exception as e:
+        messages.error(request, "Unduhan tidak dapat dihapus.")
+        return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
     
     return HttpResponseRedirect(reverse('daftar_unduhan:show_daftar_unduhan'))
 

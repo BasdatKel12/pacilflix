@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block meta %}
@@ -7,64 +6,59 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="mb-5">
-        <h2>Daftar Favorit</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="bg-white p-4 rounded shadow">
+                <div class="mb-5 text-center">
+                    <h2>Daftar Favorit</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover rounded mx-auto">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" colspan=3 class="text-center">Daftar Favorit</th>
+                            </tr>
+                            <tr class="text-center">
+                                <th scope="col">Judul</th>
+                                <th scope="col">Waktu Ditambahkan</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            {% if show_favorite_list %}
+                            {% for favorite in show_favorite_list %}
+                            <tr>
+                                <td>
+                                    <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="judul" value="{{ favorite.judul }}">
+                                        <input type="hidden" name="username" value="{{ favorite.username }}">
+                                        <input type="hidden" name="timestamp" value="{{ favorite.timestamp }}">
+                                        <a href="#" class="details-link" onclick="this.closest('form').submit();">{{ favorite.judul }}</a>
+                                    </form>
+                                </td>
+                                <td>{{ favorite.timestamp }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                        data-judul="{{ favorite.judul }}" 
+                                        data-username="{{ favorite.username }}" 
+                                        data-timestamp="{{ favorite.timestamp }}">
+                                        Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3">Belum ada tayangan favorit.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <table class="table table-responsive table-striped table-hover rounded">
-        <thead class="table-light">
-        <tr>
-            <th scope="col" colspan=3 class="text-center">Daftar Favorit</th>
-        </tr>
-        <tr class="text-center">
-            <th scope="col">Judul</th>
-            <th scope="col">Waktu Ditambahkan</th>
-            <th scope="col">Aksi</th>
-        </tr>
-        </thead>
-        <tbody class="text-center">
-            {% if show_favorite_list %}
-            {% for favorite in show_favorite_list %}
-                <tr>
-                    <td>
-                        <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="judul" value="{{ favorite.judul }}">
-                            <input type="hidden" name="username" value="{{ favorite.username }}">
-                            <input type="hidden" name="timestamp" value="{{ favorite.timestamp }}">
-                            <a href="#" class="details-link" onclick="this.closest('form').submit();">{{ favorite.judul }}</a>
-                        </form>
-                        
-                    </td>
-                    <td>{{ favorite.timestamp }}</td>
-                    <td>
-                        <!-- <form action="{% url 'daftar_favorit:show_favorite_details' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="judul" id="judulToRefer">
-                            <input type="hidden" name="username" id="usernameToRefer">
-                            <input type="hidden" name="timestamp" id="timestampToRefer">
-                            <button type="submit" class="btn btn-primary details-button"
-                                data-judul="{{ favorite.judul }}" 
-                                data-username="{{ favorite.username }}"
-                                date-timestamp="{{ favorite.timestamp }}">
-                            Details
-                            </button>
-                        </form> -->
-                        <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                            data-judul="{{ favorite.judul }}" 
-                            data-username="{{ favorite.username }}" 
-                            data-timestamp="{{ favorite.timestamp }}">
-                        Hapus
-                        </button>
-                    </td>
-                </tr>
-            {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="4">Belum ada tayangan favorit.</td>
-                </tr>
-            {% endif %}
-        </tbody>
-    </table>
 </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,50 +86,17 @@
 </div>
 
 <script>
-$('.delete-button').each(function () {
-    $(this).on('click', function () {
-        var judul = $(this).data('judul');
-        var username = $(this).data('username');
-        var timestamp = $(this).data('timestamp');
-        document.getElementById('judulToDelete').value = judul;
-        document.getElementById('usernameToDelete').value = username;
-        document.getElementById('timestampToDelete').value = timestamp;
-    });
-});
-
-$('.details-button').each(function () {
-    $(this).on('click', function () {
-        var judul = $(this).data('judul');
-        var username = $(this).data('username');
-        var timestamp = $(this).data('timestamp');
-        document.getElementById('judulToRefer').value = judul;
-        document.getElementById('usernameToRefer').value = username;
-        document.getElementById('timestampToRefer').value = timestamp;
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.delete-button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var judul = button.getAttribute('data-judul');
+            var username = button.getAttribute('data-username');
+            var timestamp = button.getAttribute('data-timestamp');
+            document.getElementById('judulToDelete').value = judul;
+            document.getElementById('usernameToDelete').value = username;
+            document.getElementById('timestampToDelete').value = timestamp;
+        });
     });
 });
 </script>
-
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah ke Daftar Favorit</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Judul daftar favorit</p>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Pilih daftar favoritmu!</option>
-                    <option value="1">Galau</option>
-                    <option value="2">Happy</option>
-                    <option value="3">Badmood</option>
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Tambah</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock content %}
