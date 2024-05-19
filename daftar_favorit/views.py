@@ -37,7 +37,23 @@ def delete_favorit(request):
         DELETE FROM daftar_favorit f WHERE f.username = '{username}' AND f.judul = '{judul}'
         """)
     
-    return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))   
+    return HttpResponseRedirect(reverse('daftar_favorit:show_daftar_favorit'))
+
+@csrf_exempt
+def delete_favorit_tayangan(request):
+    username = request.POST.get('username')
+    id_tayangan = request.POST.get('judul')
+    judul_fav = request.POST.get("judul_fav")
+    time = request.POST.get("timestamp")
+
+    with connection.cursor() as cursor:
+        cursor.execute(rf"""SET search_path TO pacilflix;
+        DELETE FROM tayangan_memiliki_daftar_favorit f WHERE f.username = '{username}' AND f.id_tayangan = '{id_tayangan}'
+        """)
+    
+    show_details = favorite_details(request, username, judul_fav, time)
+    
+    return render(request, "daftar_favorit_list.html", {'show_details': show_details }) 
 
 @csrf_exempt
 def add_favorit(request, id: str):

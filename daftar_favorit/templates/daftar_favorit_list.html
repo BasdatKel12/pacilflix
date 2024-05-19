@@ -31,9 +31,10 @@
                     <td>{{ favorite.timestamp }}</td>
                     <td>
                         <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                            data-judul="{{ favorite.judul }}" 
+                            data-judul="{{ favorite.id_tayangan }}" 
                             data-username="{{ favorite.username }}" 
-                            data-timestamp="{{ favorite.timestamp }}">
+                            data-timestamp="{{ favorite.timestamp }}"
+                            data-judul_fav="{{ favorite.judul_fav }}">
                         Hapus
                         </button>
                     </td>
@@ -59,11 +60,12 @@
                 <p>Apakah anda yakin ingin menghapus judul ini dari daftar favorit?</p>
             </div>
             <div class="modal-footer">
-                <form action="{% url 'daftar_favorit:delete_favorit' %}" method="post">
+                <form action="{% url 'daftar_favorit:delete_favorit_tayangan' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="judul" id="judulToDelete">
                     <input type="hidden" name="username" id="usernameToDelete">
                     <input type="hidden" name="timestamp" id="timestampToDelete">
+                    <input type="hidden" name="judul_fav" id="judulFavToDelete">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary">Hapus</button>
                 </form>
@@ -78,34 +80,11 @@ $('.delete-button').each(function () {
         var judul = $(this).data('judul');
         var username = $(this).data('username');
         var timestamp = $(this).data('timestamp');
+        var judul_fav = $(this).data('judul_fav');
         document.getElementById('judulToDelete').value = judul;
         document.getElementById('usernameToDelete').value = username;
-        document.getElementById('timestampToDelete').value = timestamp;
+        document.getElementById('judulFavToDelete').value = judul_fav;
     });
 });
 </script>
-
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah ke Daftar Favorit</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Judul daftar favorit</p>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Pilih daftar favoritmu!</option>
-                    <option value="1">Galau</option>
-                    <option value="2">Happy</option>
-                    <option value="3">Badmood</option>
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Tambah</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock content %}

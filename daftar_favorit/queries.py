@@ -49,7 +49,7 @@ def favorite_details(request, username, list_judul, time):
 
     with connection.cursor() as cursor:
         cursor.execute(rf"""SET search_path TO pacilflix;
-        SELECT t.judul, d.timestamp, f.username
+        SELECT t.judul, d.timestamp, f.username, d.id_tayangan, f.judul as judul_fav
             FROM daftar_favorit f
             JOIN tayangan_memiliki_daftar_favorit d ON f.username = '{username}' AND f.judul = '{list_judul}' AND f.timestamp = d.timestamp
             JOIN tayangan t ON d.id_tayangan = t.id AND d.username = '{username}'
